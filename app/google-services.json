@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "756264723742",
+    "firebase_url": "https://andoroid-ap.firebaseio.com",
+    "project_id": "andoroid-ap",
+    "storage_bucket": "andoroid-ap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756264723742:android:ed8eab372dbf5cc46b150f",
+        "android_client_info": {
+          "package_name": "com.example.chatkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "756264723742-a5koqjf5arm59ml0g43onh4m0fdb10nq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatkotlin",
+            "certificate_hash": "5e1ff309396086248e49c0767b0d91e6245f75da"
+          }
+        },
+        {
+          "client_id": "756264723742-6qs93remp0n3hed9buf7tk7bsjfg7os2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4EgN_t3g01uRRAg6ao6o9ZY7sGxLCIxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756264723742-6qs93remp0n3hed9buf7tk7bsjfg7os2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
