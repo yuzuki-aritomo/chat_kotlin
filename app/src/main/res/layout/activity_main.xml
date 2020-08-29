@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_green_light"
-    tools:context=".MainActivity" >
+    tools:context=".RegisterActivity">
 
     <EditText
         android:id="@+id/username_register"
@@ -21,7 +21,7 @@
         android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/register_img" />
 
     <EditText
         android:id="@+id/email_register"
@@ -32,8 +32,8 @@
         android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="email"
-        android:paddingLeft="16dp"
         android:inputType="textEmailAddress"
+        android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="@+id/username_register"
         app:layout_constraintStart_toStartOf="@+id/username_register"
         app:layout_constraintTop_toBottomOf="@+id/username_register" />
@@ -47,8 +47,8 @@
         android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="password"
-        android:paddingLeft="16dp"
         android:inputType="textPassword"
+        android:paddingLeft="16dp"
         app:layout_constraintEnd_toEndOf="@+id/email_register"
         app:layout_constraintStart_toStartOf="@+id/email_register"
         app:layout_constraintTop_toBottomOf="@+id/email_register" />
@@ -77,5 +77,18 @@
         app:layout_constraintEnd_toEndOf="@+id/start_btn_register"
         app:layout_constraintStart_toStartOf="@+id/start_btn_register"
         app:layout_constraintTop_toBottomOf="@+id/start_btn_register" />
+
+    <Button
+        android:id="@+id/register_img"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/holo_green_dark"
+        android:text="select photo"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
