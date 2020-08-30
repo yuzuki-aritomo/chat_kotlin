@@ -1,7 +1,6 @@
 package com.example.chatkotlin
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -11,14 +10,15 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_register)
 
         //register
         start_btn_register.setOnClickListener{
@@ -77,6 +77,23 @@ class RegisterActivity : AppCompatActivity() {
         ref.putFile(selevtedPhotoUri!!)
             .addOnSuccessListener {
                 Log.d("Register", "image upload")
+                ref.downloadUrl.addOnSuccessListener {
+                    saveUserToFirebaseDatabase(it.toString())
+                }
+            }
+    }
+    private fun saveUserToFirebaseDatabase(profileImageUrl: String){
+        val uid = FirebaseAuth.getInstance().uid ?:""
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val user = User(uid, username_register.text.toString(),profileImageUrl)
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Log.d("Main", "user to firebase database")
+                val intent = Intent(this, LatestMassageActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
     }
 }
+
+class User(val uid: String, val username: String, val profileImageUrl: String)
