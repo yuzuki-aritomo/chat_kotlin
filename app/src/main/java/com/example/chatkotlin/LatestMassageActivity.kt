@@ -13,7 +13,7 @@ class LatestMassageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_latest_massage)
 
         //loginしているかの判断
-        //verifyUserIsLoggedIn()
+        verifyUserIsLoggedIn()
     }
 
     private fun verifyUserIsLoggedIn(){

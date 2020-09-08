@@ -1,5 +1,6 @@
 package com.example.chatkotlin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,6 +24,12 @@ class NewMassageActivity : AppCompatActivity() {
 
         fetchUsers()
     }
+
+    companion object{
+        val USER_KEY = "USER_KEY"
+    }
+
+    //user をとってきて読み込み
     private fun fetchUsers(){
         val ref = FirebaseDatabase.getInstance().getReference("/users")
         ref.addListenerForSingleValueEvent(object: ValueEventListener{
@@ -35,6 +42,18 @@ class NewMassageActivity : AppCompatActivity() {
                         adapter.add(UserItem(user))
                     }
                 }
+                adapter.setOnItemClickListener { item, view ->
+                    val userItem = item as UserItem
+
+                    //user 情報を渡す
+                    val intent = Intent(view.context, ChatlogActivity::class.java)
+//                    intent.putExtra(USER_KEY, userItem.user.username)
+                    intent.putExtra(USER_KEY, userItem.user)
+
+                    startActivity(intent)
+                    finish()
+                }
+                
                 recycleview_newmassage.adapter = adapter
             }
 
