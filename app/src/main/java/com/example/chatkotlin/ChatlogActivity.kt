@@ -9,6 +9,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -19,9 +20,10 @@ import java.sql.RowId
 import java.sql.Timestamp
 
 class ChatlogActivity : AppCompatActivity() {
+
     val adapter = GroupAdapter<ViewHolder>()
 
-
+    var toUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +32,9 @@ class ChatlogActivity : AppCompatActivity() {
         recycleview_chat_log.adapter = adapter
 
 
-        val user = intent.getParcelableExtra<User>(NewMassageActivity.USER_KEY)
+        toUser = intent.getParcelableExtra<User>(NewMassageActivity.USER_KEY)
 
-        supportActionBar?.title = user.username
+        supportActionBar?.title = toUser?.username
 
         listenForMassage()
 
@@ -44,15 +46,20 @@ class ChatlogActivity : AppCompatActivity() {
     }
     private fun listenForMassage(){
         val ref = FirebaseDatabase.getInstance().getReference("/messages")
+
         ref.addChildEventListener(object : ChildEventListener {
+
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val chatmassage = p0.getValue(ChatMassage::class.java)
+
                 if(chatmassage != null){
                     Log.d("New Massage", chatmassage.text)
+
                     if(chatmassage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatToItem(chatmassage.text))
+                        adapter.add(ChatToItem(chatmassage.text,toUser!!))
                     }else{
-                        adapter.add(ChatFromItem(chatmassage.text))
+                        val currentUser = LatestMassageActivity.currentUser ?: return
+                        adapter.add(ChatFromItem(chatmassage.text, currentUser))
                     }
                 }
             }
@@ -92,31 +99,26 @@ class ChatlogActivity : AppCompatActivity() {
                 Log.d("NewMassage", "save massage")
             }
     }
-    private fun setupDummyData(){
-        val adapter = GroupAdapter<ViewHolder>()
-        //
-        adapter.add(ChatFromItem("massage"))
-        adapter.add(ChatToItem("massage to"))
-        adapter.add(ChatFromItem("from"))
-        adapter.add(ChatToItem("masse"))
-
-        recycleview_chat_log.adapter =  adapter
-
-    }
 
 }
 
-class ChatFromItem(val text: String): Item<ViewHolder>(){
+class ChatFromItem(val text: String, val user:User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_from_row.text = text
+        val uri = user.profileImageUrl
+        val targetImageView = viewHolder.itemView.imageView_from_massages
+        Picasso.get().load(uri).into(targetImageView)
     }
     override fun getLayout(): Int {
         return R.layout.chat_from_row
     }
 }
-class ChatToItem(val text: String): Item<ViewHolder>(){
+class ChatToItem(val text: String, val user:User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_to_row.text = text
+        val uri = user.profileImageUrl
+        val targetImageView = viewHolder.itemView.image_chat_to_row
+        Picasso.get().load(uri).into(targetImageView)
     }
 
     override fun getLayout(): Int {
