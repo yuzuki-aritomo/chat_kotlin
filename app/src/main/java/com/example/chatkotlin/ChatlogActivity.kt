@@ -31,7 +31,7 @@ class ChatlogActivity : AppCompatActivity() {
 
         recycleview_chat_log.adapter = adapter
 
-
+        //メッセージ相手のuser情報
         toUser = intent.getParcelableExtra<User>(NewMassageActivity.USER_KEY)
 
         supportActionBar?.title = toUser?.username
@@ -56,10 +56,10 @@ class ChatlogActivity : AppCompatActivity() {
                     Log.d("New Massage", chatmassage.text)
 
                     if(chatmassage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatToItem(chatmassage.text,toUser!!))
-                    }else{
                         val currentUser = LatestMassageActivity.currentUser ?: return
-                        adapter.add(ChatFromItem(chatmassage.text, currentUser))
+                        adapter.add(ChatToItem(chatmassage.text, currentUser))
+                    }else{
+                        adapter.add(ChatFromItem(chatmassage.text,toUser!!))
                     }
                 }
             }
@@ -108,6 +108,7 @@ class ChatFromItem(val text: String, val user:User): Item<ViewHolder>(){
         val uri = user.profileImageUrl
         val targetImageView = viewHolder.itemView.imageView_from_massages
         Picasso.get().load(uri).into(targetImageView)
+
     }
     override fun getLayout(): Int {
         return R.layout.chat_from_row
@@ -119,6 +120,7 @@ class ChatToItem(val text: String, val user:User): Item<ViewHolder>(){
         val uri = user.profileImageUrl
         val targetImageView = viewHolder.itemView.image_chat_to_row
         Picasso.get().load(uri).into(targetImageView)
+        Log.d("test","$user.uid")
     }
 
     override fun getLayout(): Int {
