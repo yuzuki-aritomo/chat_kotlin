@@ -3,19 +3,18 @@ package com.example.chatkotlin
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.util.Base64.decode
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.util.Base64.encodeToString
+import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.WindowManager
-import com.google.android.gms.common.util.IOUtils.toByteArray
 import java.io.ByteArrayOutputStream
-import java.lang.Byte.decode
-import java.lang.Long.decode
 import java.nio.ByteBuffer
-import java.text.DateFormat.DEFAULT
 import java.util.*
+
 
 class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     private var surfaceHolder: SurfaceHolder? = null
@@ -102,6 +101,13 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
         /// 前回のビットマップをキャンバスに描画
+        //canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
+
+        //var a = getStringFromBitmap(prevBitmap!!)
+        var a = encodeFromImage(prevBitmap!!)
+        Log.d("board", a)
+        prevBitmap = a?.let { getBitmapFromString(it) }
+
         canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
 
         //Bitmap → byte配列(bmp形式)
@@ -148,7 +154,19 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         encodedImage = Base64.getEncoder().encodeToString(b)
         return encodedImage
     }
-
+    private fun encodeFromImage(bitmap: Bitmap): String? {
+        var encode: String? = null
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        //encode = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+        //String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"Title",null);
+        encode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Base64.getEncoder().encodeToString(stream.toByteArray())
+        } else {
+            encodeToString(stream.toByteArray(), android.util.Base64.DEFAULT)
+            }
+        return encode
+    }
 
 
     /// 画面をタッチしたときにアクションごとに関数を呼び出す
