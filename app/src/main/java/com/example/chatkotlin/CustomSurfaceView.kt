@@ -11,9 +11,16 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.WindowManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.io.InputStream
 import java.nio.ByteBuffer
 import java.util.*
+
 
 
 class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
@@ -22,6 +29,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     private var path: Path? = null
     var color: Int? = null
     var prevBitmap: Bitmap? = null
+    var anotherBitmap: Bitmap? = null
     private var prevCanvas: Canvas? = null
     private var canvas: Canvas? = null
 
@@ -73,6 +81,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
+        anotherBitmap!!.recycle()
     }
 
 
@@ -81,6 +90,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         if (prevBitmap == null) {
             //bitmapがない時作る
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
+            anotherBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
         }
 
         if (prevCanvas == null) {
@@ -101,21 +111,21 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
         /// 前回のビットマップをキャンバスに描画
-        //canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
-
-        //var a = getStringFromBitmap(prevBitmap!!)
-        var a = encodeFromImage(prevBitmap!!)
-        Log.d("board", a)
-        prevBitmap = a?.let { getBitmapFromString(it) }
-
         canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
 
+        //var a = getStringFromBitmap(prevBitmap!!)
+//        var a = BitMapToString(prevBitmap!!)
+//        Log.d("board", a)
+//        anotherBitmap = a?.let { getBitmapFromString(it) }
+
+
+
         //Bitmap → byte配列(bmp形式)
-        val byteBuffer: ByteBuffer = ByteBuffer.allocate(prevBitmap!!.getByteCount())
-        prevBitmap!!.copyPixelsToBuffer(byteBuffer)
-        val bmparr: ByteArray = byteBuffer.array()
-        //byte配列(bmp) → Bitmap
-        prevBitmap!!.copyPixelsFromBuffer(ByteBuffer.wrap(bmparr));
+//        val byteBuffer: ByteBuffer = ByteBuffer.allocate(prevBitmap!!.getByteCount())
+//        prevBitmap!!.copyPixelsToBuffer(byteBuffer)
+//        val bmparr: ByteArray = byteBuffer.array()
+//        //byte配列(bmp) → Bitmap
+//        prevBitmap!!.copyPixelsFromBuffer(ByteBuffer.wrap(bmparr));
 
         //canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
 
@@ -125,15 +135,6 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
         /// ロックを解除
         surfaceHolder!!.unlockCanvasAndPost(canvas)
-    }
-
-    /*
-    * This Function converts the String back to Bitmap
-    * */
-    private fun getBitmapFromString(stringPicture: String): Bitmap? {
-        //val decodedString: ByteArray = Base64.decode(stringPicture, android.util.Base64.DEFAULT)
-        val decodedString: ByteArray = Base64.getDecoder().decode(stringPicture)
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
     }
 
     /*
@@ -154,20 +155,28 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         encodedImage = Base64.getEncoder().encodeToString(b)
         return encodedImage
     }
+    @SuppressLint("WrongThread")
     private fun encodeFromImage(bitmap: Bitmap): String? {
         var encode: String? = null
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         //encode = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
         //String path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap,"Title",null);
-        encode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Base64.getEncoder().encodeToString(stream.toByteArray())
-        } else {
-            encodeToString(stream.toByteArray(), android.util.Base64.DEFAULT)
-            }
+        encode = Base64.getEncoder().encodeToString(stream.toByteArray())
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            Base64.getEncoder().encodeToString(stream.toByteArray())
+//        } else {
+//            encodeToString(stream.toByteArray(), android.util.Base64.DEFAULT)
+//            }
         return encode
     }
-
+    @SuppressLint("WrongThread")
+    fun BitMapToString(bitmap: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b = baos.toByteArray()
+        return android.util.Base64.encodeToString(b, android.util.Base64.DEFAULT)
+    }
 
     /// 画面をタッチしたときにアクションごとに関数を呼び出す
     fun onTouch(event: MotionEvent) : Boolean{
@@ -182,12 +191,58 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     ///// path クラスで描画するポイントを保持
     ///    ACTION_DOWN 時の処理
     private fun touchDown(x: Float, y: Float) {
+        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val x_data = x.toString()
+        val y_data = y.toString()
+        database.child("draw_down").child("x").setValue(x_data)
+        database.child("draw_down").child("y").setValue(y_data)
+
+//        val pass = FirebaseDatabase.getInstance().getReference("/draw/draw_down")
+//        database.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val draw_down =  snapshot.getValue(Draw_data::class.java)
+//                val x_string : String = draw_down?.x.toString()
+//                val y_string = draw_down?.y.toString()
+//
+//                //string からfloatに変換
+//                val x : Float = x_string.toFloat()
+//                val y : Float = y_string.toFloat()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                //エラー処理
+//            }
+//        })
+
+        Log.d("draw", x.toString() )
         path = Path()
         path!!.moveTo(x, y)
     }
 
     ///    ACTION_MOVE 時の処理
     private fun touchMove(x: Float, y: Float) {
+        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val x_data = x.toString()
+        val y_data = y.toString()
+        database.child("draw_move").child("x").setValue(x_data)
+        database.child("draw_move").child("y").setValue(y_data)
+
+//        val pass = FirebaseDatabase.getInstance().getReference("/draw/draw_move")
+//        database.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val draw_down =  snapshot.getValue(Draw_data::class.java)
+//                val x_string : String = draw_down?.x.toString()
+//                val y_string = draw_down?.y.toString()
+//
+//                //string からfloatに変換
+//                val x : Float = x_string.toFloat()
+//                val y : Float = y_string.toFloat()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                //エラー処理
+//            }
+//        })
         /// pathクラスとdrawメソッドで線を書く
         path!!.lineTo(x, y)
         draw(pathInfo(path!!, color!!))
@@ -195,6 +250,28 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     ///    ACTION_UP 時の処理
     private fun touchUp(x: Float, y: Float) {
+        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val x_data = x.toString()
+        val y_data = y.toString()
+        database.child("draw_up").child("x").setValue(x_data)
+        database.child("draw_up").child("y").setValue(y_data)
+//
+//        val pass = FirebaseDatabase.getInstance().getReference("/draw/draw_up")
+//        database.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val draw_down =  snapshot.getValue(Draw_data::class.java)
+//                val x_string : String = draw_down?.x.toString()
+//                val y_string = draw_down?.y.toString()
+//
+//                //string からfloatに変換
+//                val x : Float = x_string.toFloat()
+//                val y : Float = y_string.toFloat()
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                //エラー処理
+//            }
+//        })
         /// pathクラスとdrawメソッドで線を書く
         path!!.lineTo(x, y)
         draw(pathInfo(path!!, color!!))
@@ -220,8 +297,14 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         paint!!.color = color as Int
     }
 }
+
 //// pathクラスの情報とそのpathの色情報を保存する
 data class pathInfo(
     var path: Path,
     var color: Int
+)
+
+data class Draw_data(
+    var x: String? = "",
+    var y: String? = "",
 )
