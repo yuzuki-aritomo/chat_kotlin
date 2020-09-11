@@ -1,9 +1,10 @@
-package com.example.chatkotlin
+package com.example.chatkotlin.Message
 
-import android.nfc.Tag
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.chatkotlin.*
+import com.example.chatkotlin.User.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -16,8 +17,6 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_chatlog.*
 import kotlinx.android.synthetic.main.chat_from_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
-import java.sql.RowId
-import java.sql.Timestamp
 
 class ChatlogActivity : AppCompatActivity() {
 
@@ -102,7 +101,7 @@ class ChatlogActivity : AppCompatActivity() {
 
 }
 
-class ChatFromItem(val text: String, val user:User): Item<ViewHolder>(){
+class ChatFromItem(val text: String, val user: User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_from_row.text = text
         val uri = user.profileImageUrl
@@ -114,7 +113,7 @@ class ChatFromItem(val text: String, val user:User): Item<ViewHolder>(){
         return R.layout.chat_from_row
     }
 }
-class ChatToItem(val text: String, val user:User): Item<ViewHolder>(){
+class ChatToItem(val text: String, val user: User): Item<ViewHolder>(){
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.textView_to_row.text = text
         val uri = user.profileImageUrl

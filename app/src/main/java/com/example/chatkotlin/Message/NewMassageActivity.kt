@@ -1,9 +1,11 @@
-package com.example.chatkotlin
+package com.example.chatkotlin.Message
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.chatkotlin.R
+import com.example.chatkotlin.User.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
