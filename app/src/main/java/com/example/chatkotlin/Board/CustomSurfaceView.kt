@@ -173,11 +173,16 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     }
     /// resetメソッド
     fun reset() {
+
         ///初期化とキャンバスクリア
         initializeBitmap()
         canvas = surfaceHolder!!.lockCanvas()
         canvas?.drawColor(0, PorterDuff.Mode.CLEAR)
         surfaceHolder!!.unlockCanvasAndPost(canvas)
+
+        val ref = FirebaseDatabase.getInstance().getReference("/draw/btn/reset")
+        ref.setValue("reset")
+        ref.setValue("a")
     }
 
     /// color チェンジメソッド
@@ -188,6 +193,9 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
             "green" -> color = Color.GREEN
         }
         paint!!.color = color as Int
+
+        val ref = FirebaseDatabase.getInstance().getReference("/draw/btn/color")
+        ref.setValue(colorSelected)
     }
 }
 

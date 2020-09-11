@@ -85,5 +85,37 @@ class AnotherBoardActivity : AppCompatActivity() {
             }
         })
 
+        // 色を変えた場合の処理
+        val color_ref = FirebaseDatabase.getInstance().getReference("/draw/btn")
+        color_ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val btn_ref =  snapshot.getValue(Button_board::class.java)
+                val selectedcolor = btn_ref?.color
+                customSurfaceView.changeColor(selectedcolor!!)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //エラー処理
+            }
+        })
+
+        // リセットボタンの処理
+        val reset_ref = FirebaseDatabase.getInstance().getReference("/draw/btn")
+        reset_ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val btn_ref =  snapshot.getValue(Button_board::class.java)
+                if(btn_ref?.reset == "reset"){
+                    customSurfaceView.reset()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //エラー処理
+            }
+        })
     }
 }
+data class Button_board(
+    var color: String = "black",
+    var reset: String = "reset"
+)
