@@ -1,4 +1,4 @@
-package com.example.chatkotlin
+package com.example.chatkotlin.User
 
 import android.app.Activity
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import com.example.chatkotlin.Message.LatestMassageActivity
+import com.example.chatkotlin.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage

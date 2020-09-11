@@ -9,15 +9,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatlogActivity"></activity>
-        <activity android:name=".LatestMassageActivity">
+        <activity android:name=".Board.AnotherBoardActivity">
+        </activity>
+        <activity android:name=".Board.BoardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".Message.ChatlogActivity" />
+        <activity android:name=".Message.LatestMassageActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity android:name=".User.RegisterActivity">
 
             <!-- 以下一時的にコメントアウト -->
             <!-- <intent-filter> -->
@@ -25,11 +36,11 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".NewMassageActivity">
+        <activity android:name=".User.LoginActivity" />
+        <activity android:name=".Message.NewMassageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LatestMassageActivity" />
+                android:value=".Message.LatestMassageActivity" />
         </activity>
     </application>
 

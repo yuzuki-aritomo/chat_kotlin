@@ -1,4 +1,4 @@
-package com.example.chatkotlin
+package com.example.chatkotlin.User
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

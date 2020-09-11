@@ -1,13 +1,12 @@
-package com.example.chatkotlin
+package com.example.chatkotlin.User
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.chatkotlin.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.btn_login
 
 class LoginActivity: AppCompatActivity(){
