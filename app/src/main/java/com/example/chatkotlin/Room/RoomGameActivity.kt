@@ -1,9 +1,7 @@
 package com.example.chatkotlin.Room
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatkotlin.Board.*
@@ -17,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_board.*
 import kotlinx.android.synthetic.main.activity_board.blackBtn
 import kotlinx.android.synthetic.main.activity_board.greenBtn
 import kotlinx.android.synthetic.main.activity_board.redBtn
-import kotlinx.android.synthetic.main.activity_board.resetBtn
 
 
 class RoomGameActivity : AppCompatActivity() {
@@ -26,22 +23,26 @@ class RoomGameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_room_game)
 
         val room_id = intent.getStringExtra("room_id")
-
-        val intent = Intent(this, BoardActivity::class.java)
-        intent.putExtra("room_id", room_id)
-        startActivity(intent)
+//      Boardactivityの開始
+//        val intent = Intent(this, BoardActivity::class.java)
+//        intent.putExtra("room_id", room_id)
+//        startActivity(intent)
         //room_id/IfGameOrNot を変更
 
 
         //ボードに書く関数
         setScreenWrite()
     }
-    //ボードに書く人
+
+    //---------------------------------
+    //ボードに書くレイアウトのスタート
+    // --------------------------------
     private fun setScreenWrite() {
         setContentView(R.layout.activity_board)
+
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
-        val customSurfaceView = CustomSurfaceView(this, surfaceView)
-        surfaceView.setOnTouchListener { v, event ->
+        val customSurfaceView = CustomSurfaceView(this, surfaceView_write)
+        surfaceView_write.setOnTouchListener { v, event ->
             customSurfaceView.onTouch(event)
         }
 
@@ -58,16 +59,31 @@ class RoomGameActivity : AppCompatActivity() {
         }
 
         /// リセットボタン
-        resetBtn.setOnClickListener {
+        btn_board_reset.setOnClickListener {
             customSurfaceView.reset()
         }
-    }
-    //ボードを見る人
-    private fun setScreenWatch() {
+        //見る画面に移動
+        val button: Button = findViewById(R.id.btn_to_another_board_activity)
+        button.setOnClickListener {
 
+            setScreenWatch()
+        }
+    }
+
+    //---------------------------------
+    // ボードを見る人のレイアウト表示
+    //--------------------------------
+    private fun setScreenWatch() {
         setContentView(R.layout.activity_another_board)
+
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         val customSurfaceView = CustomSurfaceView_read(this, surfaceView_read)
+
+        //書く画面に移動
+        val button: Button = findViewById(R.id.btn_to_write_board)
+        button.setOnClickListener {
+            setScreenWrite()
+        }
 
         val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {

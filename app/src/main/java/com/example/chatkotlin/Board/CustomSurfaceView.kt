@@ -27,6 +27,8 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     constructor(context: Context, surfaceView: SurfaceView) : super(context) {
         surfaceHolder = surfaceView.holder
 
+        Log.d("room","massage from constructor")
+
         /// display の情報（高さ 横）を取得
         val size = Point().also {
             (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.apply {
@@ -55,9 +57,12 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         paint!!.strokeCap = Paint.Cap.ROUND
         paint!!.isAntiAlias = true
         paint!!.strokeWidth = width!!*0.03.toFloat()
+
+        initializeBitmap()
     }
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
+        Log.d("room","surfaceCreated")
         /// bitmap,canvas初期化
         initializeBitmap()
     }
@@ -67,9 +72,9 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
+        Log.d("room","destroyed")
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
-        anotherBitmap!!.recycle()
     }
 
 
@@ -79,12 +84,14 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
             //bitmapがない時作る
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
             anotherBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
+            Log.d("room","massage from prevBitmap")
         }
 
         if (prevCanvas == null) {
             //canvasが情報ない時bimapで作る
             prevCanvas = Canvas(prevBitmap!!)
             //Log.d("board", prevBitmap!!)
+            Log.d("room","massage from prevCanvas")
         }
 
         prevCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
@@ -95,6 +102,9 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
 
+        if(canvas == null){
+            return
+        }
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
