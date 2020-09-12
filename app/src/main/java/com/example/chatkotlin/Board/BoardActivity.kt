@@ -13,6 +13,10 @@ class BoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
 
+        //user_idの取得
+        val room_id = intent.getStringExtra("room_id")
+        //game_or_not の取得(true:そのまま　false:終了)
+
         val button: Button = findViewById(R.id.btn_to_another_board_activity)
         button.setOnClickListener {
             val intent = Intent(this, AnotherBoardActivity::class.java)

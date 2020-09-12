@@ -56,7 +56,7 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         paint!!.strokeCap = Paint.Cap.ROUND
         paint!!.isAntiAlias = true
         paint!!.setPathEffect(CornerPathEffect(10f))
-        paint!!.strokeWidth = 15F
+        paint!!.strokeWidth = width!!*0.03.toFloat()
     }
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -125,15 +125,18 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
 
     public fun touchDown(x: Float, y: Float) {
 
+        val x_width = x*width!!
+        val y_width = y*height!!
         path = Path()
-        path!!.moveTo(x, y)
+        path!!.moveTo(x_width, y_width)
     }
 
     ///    ACTION_MOVE 時の処理
     public fun touchMove(x: Float, y: Float) {
-
+        val x_width = x*width!!
+        val y_width = y*height!!
         /// pathクラスとdrawメソッドで線を書く
-        path!!.lineTo(x, y)
+        path!!.lineTo(x_width, y_width)
         Log.d("test","dd" )
         draw(pathInfo(path!!, color!!))
     }
@@ -141,11 +144,13 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
     ///    ACTION_UP 時の処理
     public fun touchUp(x: Float, y: Float) {
 
+        val x_width = x*width!!
+        val y_width = y*height!!
         /// 前回のキャンバスを描画 path がnullの時エラー発生
         if(path == null){
             return
         }
-        path!!.lineTo(x, y)
+        path!!.lineTo(x_width, y_width)
         draw(pathInfo(path!!, color!!))
         prevCanvas!!.drawPath(path!!, paint!!)
     }
