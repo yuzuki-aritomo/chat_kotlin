@@ -11,23 +11,23 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="New Button"
-            android:id="@+id/leftb"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:background="#33ff00" />
+<!--        <Button-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="New Button"-->
+<!--            android:id="@+id/leftb"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#33ff00" />-->
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="New Button"
-            android:id="@+id/rightb"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:background="#ffee00" />
+<!--        <Button-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="New Button"-->
+<!--            android:id="@+id/rightb"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="#ffee00" />-->
 
     </ViewSwitcher>
 
@@ -38,21 +38,19 @@
         android:gravity="center_vertical">
 
         <Button
+            android:id="@+id/button_to_prev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="prev"
-            android:id="@+id/button"
             android:layout_weight="1"
-            android:onClick="prevClick" />
+            android:text="prev" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/button_to_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="nextClick"
-            android:text="next"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="next" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,8 +1,13 @@
 package com.example.chatkotlin.Room
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ViewSwitcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatkotlin.Board.Button_board
@@ -16,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_another_board.*
 import kotlinx.android.synthetic.main.activity_board.*
+import kotlinx.android.synthetic.main.board_write.*
 
 
 class RoomGameActivity : AppCompatActivity() {
@@ -28,18 +34,20 @@ class RoomGameActivity : AppCompatActivity() {
 //        val customSurfaceView_write = CustomSurfaceView(this, surfaceView_write)
 //    }
 
+    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
 
         val room_id = intent.getStringExtra("room_id")
+//
 //      Boardactivityの開始
 //        val intent = Intent(this, BoardActivity::class.java)
 //        intent.putExtra("room_id", room_id)
 //        startActivity(intent)
         //room_id/IfGameOrNot を変更
 
-//        setContentView(R.layout.activity_board)
+        setContentView(R.layout.activity_board)
 //        val customSurfaceView_write = CustomSurfaceView(this, surfaceView_write)
 
 //        setContentView(R.layout.activity_another_board)
@@ -47,10 +55,29 @@ class RoomGameActivity : AppCompatActivity() {
 
         //ボードに書く関数
 //        setScreenWrite()
-        vs = findViewById(R.id.viewSwitcher1);
-        val image1 = inflater.inflate(R.layout.image_1, null)
-        val image2 = inflater.inflate(R.layout.image_2, null)
-
+//        vs = findViewById(R.id.viewSwitcher1);
+//
+//        setContentView(R.layout.board_watch)
+//        var board_watch: LinearLayout  = findViewById(R.id.board_watch_to)
+//
+//        setContentView(R.layout.board_write)
+//        var board_write: LinearLayout  = findViewById(R.id.board_write)
+//
+//        setContentView(R.layout.activity_room_game)
+//
+//        vs?.addView(board_watch)
+//        vs?.addView(board_write)
+//
+//        val button_next: Button = findViewById(R.id.button_to_next)
+//        button_next.setOnClickListener{
+//            vs?.showNext()
+//            Log.d("aaa","pushed")
+//        }
+//        val button_prev: Button = findViewById(R.id.button_to_prev)
+//        button_prev.setOnClickListener {
+//            vs?.showPrevious()
+//            Log.d("aaa","pushed")
+//        }
     }
 
 
