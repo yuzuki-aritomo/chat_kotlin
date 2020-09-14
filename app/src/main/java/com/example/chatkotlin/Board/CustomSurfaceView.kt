@@ -12,14 +12,18 @@ import java.util.*
 
 
 class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
-    private var surfaceHolder: SurfaceHolder? = null
-    private var paint: Paint? = null
-    private var path: Path? = null
+    //private
+    var surfaceHolder: SurfaceHolder? = null
+    var paint: Paint? = null
+    var path: Path? = null
+
     var color: Int? = null
     var prevBitmap: Bitmap? = null
     var anotherBitmap: Bitmap? = null
-    private var prevCanvas: Canvas? = null
-    private var canvas: Canvas? = null
+
+    //private
+    var prevCanvas: Canvas? = null
+    var canvas: Canvas? = null
 
     var width: Int? = null
     var height: Int? = null
@@ -71,12 +75,25 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     }
 
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+    override fun surfaceDestroyed(holder: SurfaceHolder?,) {
         Log.d("room","destroyed")
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
+        canvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        surfaceHolder = null
+        paint = null
+        path = null
+        color = null
+        prevBitmap = null
+        prevCanvas = null
+        canvas = null
+        width = null
+        height = null
     }
+    private fun setZ(surfaceView: SurfaceView){
+        surfaceView.setZOrderOnTop(false)
 
+    }
 
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
@@ -99,12 +116,13 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     private fun draw(pathInfo: pathInfo) {
         canvas = Canvas()
 
+        if(surfaceHolder!!.lockCanvas() == null){
+            return
+        }
+
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
 
-        if(canvas == null){
-            return
-        }
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 

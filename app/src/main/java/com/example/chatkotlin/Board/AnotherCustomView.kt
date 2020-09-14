@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.WindowManager
-import kotlinx.android.synthetic.main.activity_board.view.*
 
 @SuppressLint("ViewConstructor")
 class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
@@ -58,14 +57,15 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         paint!!.setPathEffect(CornerPathEffect(10f))
         paint!!.strokeWidth = width!!*0.03.toFloat()
 
-        Log.d("room1","massage from constructor")
+        Log.d("room1", "massage from constructor")
         initializeBitmap()
     }
+
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
         /// bitmap,canvas初期化
         initializeBitmap()
-        Log.d("room1","massage from surfaceCreated")
+        Log.d("room1", "massage from surfaceCreated")
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -75,15 +75,14 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
-        Log.d("room1","massage from surfaceDestroyed")
+        Log.d("room1", "massage from surfaceDestroyed")
     }
-
 
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
         if (prevBitmap == null) {
             //bitmapがない時作る
-            Log.d("room1","prevBitmap")
+            Log.d("room1", "prevBitmap")
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
         }
 
@@ -99,12 +98,12 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
 
         canvas = Canvas()
 
+        if(surfaceHolder!!.lockCanvas() == null){
+            return
+        }
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
 
-        if(canvas == null){
-            return
-        }
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
@@ -146,7 +145,7 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         val y_width = y*height!!
         /// pathクラスとdrawメソッドで線を書く
         path!!.lineTo(x_width, y_width)
-        Log.d("test","dd" )
+        Log.d("test", "dd")
         draw(pathInfo(path!!, color!!))
     }
 
