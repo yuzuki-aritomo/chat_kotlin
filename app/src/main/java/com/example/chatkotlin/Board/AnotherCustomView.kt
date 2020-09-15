@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.WindowManager
+import kotlinx.android.synthetic.main.activity_board.view.*
 
 @SuppressLint("ViewConstructor")
 class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
@@ -55,17 +56,12 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         paint!!.strokeCap = Paint.Cap.ROUND
         paint!!.isAntiAlias = true
         paint!!.setPathEffect(CornerPathEffect(10f))
-        paint!!.strokeWidth = width!!*0.03.toFloat()
-
-        Log.d("room1", "massage from constructor")
-        initializeBitmap()
+        paint!!.strokeWidth = 15F
     }
-
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
         /// bitmap,canvas初期化
         initializeBitmap()
-        Log.d("room1", "massage from surfaceCreated")
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -75,15 +71,15 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
-        Log.d("room1", "massage from surfaceDestroyed")
     }
+
 
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
         if (prevBitmap == null) {
             //bitmapがない時作る
-            Log.d("room1", "prevBitmap")
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
+            anotherBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
         }
 
         if (prevCanvas == null) {
@@ -95,15 +91,11 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         prevCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
     }
     private fun draw(pathInfo: pathInfo) {
-
         canvas = Canvas()
-
 
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
-        if(surfaceHolder!!.lockCanvas() == null){
-            return
-        }
+
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
@@ -133,32 +125,27 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
 
     public fun touchDown(x: Float, y: Float) {
 
-        val x_width = x*width!!
-        val y_width = y*height!!
         path = Path()
-        path!!.moveTo(x_width, y_width)
+        path!!.moveTo(x, y)
     }
 
     ///    ACTION_MOVE 時の処理
     public fun touchMove(x: Float, y: Float) {
-        val x_width = x*width!!
-        val y_width = y*height!!
+
         /// pathクラスとdrawメソッドで線を書く
-        path!!.lineTo(x_width, y_width)
-        Log.d("test", "dd")
+        path!!.lineTo(x, y)
+        Log.d("test","dd" )
         draw(pathInfo(path!!, color!!))
     }
 
     ///    ACTION_UP 時の処理
     public fun touchUp(x: Float, y: Float) {
 
-        val x_width = x*width!!
-        val y_width = y*height!!
         /// 前回のキャンバスを描画 path がnullの時エラー発生
         if(path == null){
             return
         }
-        path!!.lineTo(x_width, y_width)
+        path!!.lineTo(x, y)
         draw(pathInfo(path!!, color!!))
         prevCanvas!!.drawPath(path!!, paint!!)
     }
