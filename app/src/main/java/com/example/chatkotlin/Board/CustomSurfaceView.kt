@@ -2,6 +2,7 @@ package com.example.chatkotlin.Board
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -11,12 +12,16 @@ import java.util.*
 
 
 class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
+    //private
     private var surfaceHolder: SurfaceHolder? = null
     private var paint: Paint? = null
     private var path: Path? = null
+
     var color: Int? = null
     var prevBitmap: Bitmap? = null
     var anotherBitmap: Bitmap? = null
+
+    //private
     private var prevCanvas: Canvas? = null
     private var canvas: Canvas? = null
 
@@ -25,6 +30,8 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     constructor(context: Context, surfaceView: SurfaceView) : super(context) {
         surfaceHolder = surfaceView.holder
+
+        Log.d("room","massage from constructor")
 
         /// display の情報（高さ 横）を取得
         val size = Point().also {
@@ -53,10 +60,13 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         paint!!.style = Paint.Style.STROKE
         paint!!.strokeCap = Paint.Cap.ROUND
         paint!!.isAntiAlias = true
-        paint!!.strokeWidth = 15F
+        paint!!.strokeWidth = width!!*0.03.toFloat()
+
+        initializeBitmap()
     }
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
+        Log.d("room","surfaceCreated")
         /// bitmap,canvas初期化
         initializeBitmap()
     }
@@ -65,12 +75,21 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     }
 
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
+    override fun surfaceDestroyed(holder: SurfaceHolder?,) {
+        Log.d("room","destroyed")
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
-        anotherBitmap!!.recycle()
+//        canvas!!.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//        surfaceHolder = null
+//        paint = null
+//        path = null
+//        color = null
+//        prevBitmap = null
+//        prevCanvas = null
+//        canvas = null
+//        width = null
+//        height = null
     }
-
 
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
@@ -78,18 +97,24 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
             //bitmapがない時作る
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
             anotherBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
+            Log.d("room","massage from prevBitmap")
         }
 
         if (prevCanvas == null) {
             //canvasが情報ない時bimapで作る
             prevCanvas = Canvas(prevBitmap!!)
             //Log.d("board", prevBitmap!!)
+            Log.d("room","massage from prevCanvas")
         }
 
         prevCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
     }
     private fun draw(pathInfo: pathInfo) {
         canvas = Canvas()
+
+        if(surfaceHolder!!.lockCanvas() == null){
+            return
+        }
 
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
@@ -122,14 +147,18 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     ///    ACTION_DOWN 時の処理
     private fun touchDown(x: Float, y: Float) {
         val database = FirebaseDatabase.getInstance().getReference("/draw")
-        val x_data = x.toString()
-        val y_data = y.toString()
+
+        val x_width = x/width!!
+        val y_height = y/height!!
+        val x_data = x_width.toString()
+        val y_data = y_height.toString()
 
         val xyDataUpdate: MutableMap<String, Any> = HashMap()
         xyDataUpdate["x"] = x_data
         xyDataUpdate["y"] = y_data
         database.child("draw_down").updateChildren(xyDataUpdate)
 
+        Log.d("width", width.toString())
         path = Path()
         path!!.moveTo(x, y)
     }
@@ -137,8 +166,10 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     ///    ACTION_MOVE 時の処理
     private fun touchMove(x: Float, y: Float) {
         val database = FirebaseDatabase.getInstance().getReference("/draw")
-        val x_data = x.toString()
-        val y_data = y.toString()
+        val x_width = x/width!!
+        val y_width = y/height!!
+        val x_data = x_width.toString()
+        val y_data = y_width.toString()
         database.child("draw_move").child("x").setValue(x_data)
         database.child("draw_move").child("y").setValue(y_data)
 
@@ -149,8 +180,10 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     ///    ACTION_UP 時の処理
     private fun touchUp(x: Float, y: Float) {
         val database = FirebaseDatabase.getInstance().getReference("/draw")
-        val x_data = x.toString()
-        val y_data = y.toString()
+        val x_width = x/width!!
+        val y_width = y/height!!
+        val x_data = x_width.toString()
+        val y_data = y_width.toString()
 //        database.child("draw_up").child("x").setValue(x_data)
 //        database.child("draw_up").child("y").setValue(y_data)
 

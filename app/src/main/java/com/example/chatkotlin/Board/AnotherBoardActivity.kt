@@ -23,7 +23,7 @@ class AnotherBoardActivity : AppCompatActivity() {
 //            customSurfaceView.onTouch(event)
 //        }
 
-        val pass_down = FirebaseDatabase.getInstance().getReference("/draw/draw_down")
+        val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val draw_down =  snapshot.getValue(Draw_data::class.java)
