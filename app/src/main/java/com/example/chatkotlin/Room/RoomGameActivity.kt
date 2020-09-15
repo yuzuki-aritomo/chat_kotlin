@@ -1,14 +1,11 @@
 package com.example.chatkotlin.Room
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ViewSwitcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatkotlin.Board.Button_board
 import com.example.chatkotlin.Board.CustomSurfaceView
@@ -21,63 +18,18 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_another_board.*
 import kotlinx.android.synthetic.main.activity_board.*
-import kotlinx.android.synthetic.main.board_write.*
 
 
 class RoomGameActivity : AppCompatActivity() {
-
-    private var vs: ViewSwitcher? = null
-
-//    private val customSurfaceView_read  = CustomSurfaceView_read(this, surfaceView_read)
-//
-//    private fun SurfaceView_write_instance(){
-//        val customSurfaceView_write = CustomSurfaceView(this, surfaceView_write)
-//    }
-
-    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
 
         val room_id = intent.getStringExtra("room_id")
-//
-//      Boardactivityの開始
-//        val intent = Intent(this, BoardActivity::class.java)
-//        intent.putExtra("room_id", room_id)
-//        startActivity(intent)
-        //room_id/IfGameOrNot を変更
 
-        setContentView(R.layout.activity_board)
-//        val customSurfaceView_write = CustomSurfaceView(this, surfaceView_write)
-
-//        setContentView(R.layout.activity_another_board)
-//        val customSurfaceView_read  = CustomSurfaceView_read(this, surfaceView_read)
-
-        //ボードに書く関数
-//        setScreenWrite()
-//        vs = findViewById(R.id.viewSwitcher1);
-//
-//        setContentView(R.layout.board_watch)
-//        var board_watch: LinearLayout  = findViewById(R.id.board_watch_to)
-//
-//        setContentView(R.layout.board_write)
-//        var board_write: LinearLayout  = findViewById(R.id.board_write)
-//
 //        setContentView(R.layout.activity_room_game)
-//
-//        vs?.addView(board_watch)
-//        vs?.addView(board_write)
-//
-//        val button_next: Button = findViewById(R.id.button_to_next)
-//        button_next.setOnClickListener{
-//            vs?.showNext()
-//            Log.d("aaa","pushed")
-//        }
-//        val button_prev: Button = findViewById(R.id.button_to_prev)
-//        button_prev.setOnClickListener {
-//            vs?.showPrevious()
-//            Log.d("aaa","pushed")
-//        }
+
+        setScreenWrite()
     }
 
 
@@ -88,12 +40,10 @@ class RoomGameActivity : AppCompatActivity() {
     //ボードに書くレイアウトのスタート
     // --------------------------------
     private fun setScreenWrite() {
-
-
         setContentView(R.layout.activity_board)
+
         val customSurfaceView_write = CustomSurfaceView(this, surfaceView_write)
         Log.d("type", customSurfaceView_write.javaClass.kotlin.toString())
-
 
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         surfaceView_write.setOnTouchListener { v, event ->
@@ -130,9 +80,7 @@ class RoomGameActivity : AppCompatActivity() {
     //--------------------------------
     private fun setScreenWatch() {
         setContentView(R.layout.activity_another_board)
-
         val customSurfaceView_read  = CustomSurfaceView_read(this, surfaceView_read)
-
 
         //書く画面に移動
         val button: Button = findViewById(R.id.btn_to_write_board)

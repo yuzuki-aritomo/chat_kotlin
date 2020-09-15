@@ -1,56 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout0"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <ViewSwitcher
-        android:id="@+id/viewSwitcher1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
 
-<!--        <Button-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="New Button"-->
-<!--            android:id="@+id/leftb"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="#33ff00" />-->
-
-<!--        <Button-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="New Button"-->
-<!--            android:id="@+id/rightb"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="#ffee00" />-->
-
-    </ViewSwitcher>
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_to_prev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="prev" />
+        <!-- included_layout.xml を読み込む -->
+        <include
+            android:id="@+id/include_views_1"
+            layout="@layout/activity_board"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <Button
-            android:id="@+id/button_to_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="next" />
-    </LinearLayout>
+        <!-- さらに追加したければ、またincludeすれば良い -->
+        <!--        <include-->
+        <!--            android:id="@+id/include_views_2"-->
+        <!--            layout="@layout/activity_another_board" />-->
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

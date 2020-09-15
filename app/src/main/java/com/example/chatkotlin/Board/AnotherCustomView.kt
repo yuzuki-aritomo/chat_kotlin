@@ -98,12 +98,12 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
 
         canvas = Canvas()
 
+
+        /// ロックしてキャンバスを取得
+        canvas = surfaceHolder!!.lockCanvas()
         if(surfaceHolder!!.lockCanvas() == null){
             return
         }
-        /// ロックしてキャンバスを取得
-        canvas = surfaceHolder!!.lockCanvas()
-
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
