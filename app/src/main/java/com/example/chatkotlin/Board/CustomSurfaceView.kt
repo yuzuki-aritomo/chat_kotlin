@@ -89,7 +89,13 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 //        width = null
 //        height = null
     }
-
+    fun unlockCanvasAndPost(){
+        canvas = Canvas()
+        /// ロックしてキャンバスを取得
+        canvas = surfaceHolder!!.lockCanvas()
+        //ロックを解除しないとエラーになる
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
+    }
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
         if (prevBitmap == null) {

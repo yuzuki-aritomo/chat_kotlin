@@ -57,7 +57,6 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
         paint!!.strokeWidth = width!!*0.03.toFloat()
 
         Log.d("room1", "massage from constructor")
-        initializeBitmap()
     }
 
     /// surfaceViewが作られたとき
@@ -74,9 +73,16 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
         /// bitmapをリサイクル
         prevBitmap!!.recycle()
+
         Log.d("room1", "massage from surfaceDestroyed")
     }
-
+    fun unlockCanvasAndPost(){
+        canvas = Canvas()
+        /// ロックしてキャンバスを取得
+        canvas = surfaceHolder!!.lockCanvas()
+        //ロックを解除しないとエラーになる
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
+    }
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
         if (prevBitmap == null) {
@@ -100,9 +106,7 @@ class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
 
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()
-        if(surfaceHolder!!.lockCanvas() == null){
-            return
-        }
+
         //// キャンバスのクリア
         canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
 
