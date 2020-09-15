@@ -9,7 +9,6 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.WindowManager
 
-@SuppressLint("ViewConstructor")
 class CustomSurfaceView_read: SurfaceView, SurfaceHolder.Callback{
     private var surfaceHolder: SurfaceHolder? = null
     private var paint: Paint? = null

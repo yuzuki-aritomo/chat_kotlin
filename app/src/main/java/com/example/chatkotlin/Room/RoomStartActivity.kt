@@ -20,8 +20,9 @@ class RoomStartActivity : AppCompatActivity() {
         //ゲームスタートボタン
         val game_start : Button = findViewById(R.id.start_from_start)
         game_start.setOnClickListener {
-            val intent = Intent(this, RoomGameActivity::class.java)
-            intent.putExtra("room_id", room_id)
+            //val intent = Intent(this, RoomGameActivity::class.java)
+            val intent = Intent(this, RoomMainActivity::class.java)
+            intent.putExtra("room_id", room_id)//room_id: room_1
             startActivity(intent)
             //room_id/IfGameOrNot を変更
 

@@ -62,7 +62,6 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         paint!!.isAntiAlias = true
         paint!!.strokeWidth = width!!*0.03.toFloat()
 
-        initializeBitmap()
     }
     /// surfaceViewが作られたとき
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -112,9 +111,9 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     private fun draw(pathInfo: pathInfo) {
         canvas = Canvas()
 
-        if(surfaceHolder!!.lockCanvas() == null){
-            return
-        }
+//        if(surfaceHolder!!.lockCanvas() == null){
+//            return
+//        }
 
         /// ロックしてキャンバスを取得
         canvas = surfaceHolder!!.lockCanvas()

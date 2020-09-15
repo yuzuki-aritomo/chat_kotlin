@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.chatkotlin.R
+import com.example.chatkotlin.Room.RoomMainActivity
 import kotlinx.android.synthetic.main.activity_board.*
 
 class BoardActivity : AppCompatActivity() {
@@ -18,7 +19,7 @@ class BoardActivity : AppCompatActivity() {
 
         val button: Button = findViewById(R.id.btn_to_another_board_activity)
         button.setOnClickListener {
-            val intent = Intent(this, AnotherBoardActivity::class.java)
+            val intent = Intent(this, RoomMainActivity::class.java)
             startActivity(intent)
         }
         // 実行ボタンタップ時

@@ -1,10 +1,13 @@
 package com.example.chatkotlin.Board
 
+import android.content.Intent
 import android.graphics.Path
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import com.example.chatkotlin.R
+import com.example.chatkotlin.Room.RoomMainActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,6 +20,11 @@ class AnotherBoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_another_board)
 
+        val button: Button = findViewById(R.id.btn_to_write_board)
+        button.setOnClickListener {
+            val intent = Intent(this, RoomMainActivity::class.java)
+            startActivity(intent)
+        }
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         val customSurfaceView = CustomSurfaceView_read(this, surfaceView_read)
 //        surfaceView_read.setOnTouchListener { v, event ->
