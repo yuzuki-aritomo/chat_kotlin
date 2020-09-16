@@ -235,6 +235,57 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         val ref = FirebaseDatabase.getInstance().getReference("/draw/btn/color")
         ref.setValue(colorSelected)
     }
+
+    //------------------------------------
+    //watchの修正
+    //-----------------------------------
+    fun onTouch_watch(event: MotionEvent) : Boolean{
+
+        return true
+    }
+
+    fun touchDown_watch(x: Float, y: Float) {
+        val x_width = x*width!!
+        val y_width = y*height!!
+        path = Path()
+        path!!.moveTo(x_width, y_width)
+    }
+    fun touchMove_watch(x: Float, y: Float) {
+        val x_width = x*width!!
+        val y_width = y*height!!
+        /// pathクラスとdrawメソッドで線を書く
+        path!!.lineTo(x_width, y_width)
+        Log.d("test", "dd")
+        draw(pathInfo(path!!, color!!))
+    }
+    fun touchUp_watch(x: Float, y: Float) {
+
+        val x_width = x*width!!
+        val y_width = y*height!!
+        /// 前回のキャンバスを描画 path がnullの時エラー発生
+        if(path == null){
+            return
+        }
+        path!!.lineTo(x_width, y_width)
+        draw(pathInfo(path!!, color!!))
+        prevCanvas!!.drawPath(path!!, paint!!)
+    }
+    fun reset_watch(){
+        ///初期化とキャンバスクリア
+        initializeBitmap()
+        canvas = surfaceHolder!!.lockCanvas()
+        canvas?.drawColor(0, PorterDuff.Mode.CLEAR)
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
+    }
+    fun changeColor_watch(colorSelected: String) {
+        when (colorSelected) {
+            "black" -> color = Color.BLACK
+            "red" -> color = Color.RED
+            "green" -> color = Color.GREEN
+        }
+        paint!!.color = color as Int
+    }
+
 }
 
 //// pathクラスの情報とそのpathの色情報を保存する
