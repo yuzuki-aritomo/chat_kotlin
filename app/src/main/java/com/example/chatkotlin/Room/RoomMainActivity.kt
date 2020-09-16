@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_room_main.*
 import kotlin.system.exitProcess
 
 class RoomMainActivity : AppCompatActivity() {
+    var i: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_main)
@@ -32,21 +33,27 @@ class RoomMainActivity : AppCompatActivity() {
 
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
 
-        var i = 0
+        i = 0
 //        val job = surface_write_fun(customSurfaceView,i)
 //        job.cancel
+        surface_watch_fun(customSurfaceView)
 
         btn.setOnClickListener{
-            if(i%2==0){
-                surface_write_fun(customSurfaceView,i)
+            if(i%2==1){
+                i = i + 1
+                surface_write_fun(customSurfaceView)
+                Log.d("bbb","write${i.toString()}")
 
 //                Log.d("num",surface_write_fun(customSurfaceView,i).toString())
-            }else if(i%2==1){
+            }else if(i%2==0){
+                i = i + 1
 //                surface_write_fun(customSurfaceView,i)
-                surface_watch_fun(customSurfaceView)
+//                surface_watch_fun(customSurfaceView)
+                customSurfaceView.setOnTouchListener { v, event ->
+                    customSurfaceView.onTouch_watch(event)
+                }
                 Log.d("num",i.toString())
             }
-            i = i + 1
         }
 
 
@@ -67,50 +74,54 @@ class RoomMainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun surface_write_fun(customSurfaceView_write: CustomSurfaceView, i: Int){
+    fun surface_write_fun(customSurfaceView_write: CustomSurfaceView){
+
+        //リッスンの終了
+//        val ref_draw = FirebaseDatabase.getInstance().getReference("draw")
+//        ref_draw.child("draw_up/x").onDisconnect()
+//        ref_draw.child("draw_up/y").onDisconnect()
+//        ref_draw.child("draw_move/x").onDisconnect()
+//        ref_draw.child("draw_move/y").onDisconnect()
+//        ref_draw.child("draw_down/x").onDisconnect()
+//        ref_draw.child("draw_down/y").onDisconnect()
 
 
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         surfaceView_write.setOnTouchListener { v, event ->
-            if(i%2==0){
-                customSurfaceView_write.onTouch(event)
-
-            }else{
-                customSurfaceView_write.onTouch_watch(event)
-            }
+            customSurfaceView_write.onTouch(event)
         }
-        if(i%2==0){
-            /// カラーチェンジボタンにリスナーをセット
-            /// CustomSurfaceViewのchangeColorメソッドを呼び出す
-            blackBtn.setOnClickListener {
-                customSurfaceView_write.changeColor("black")
-            }
-            redBtn.setOnClickListener {
-                customSurfaceView_write.changeColor("red")
-            }
-            greenBtn.setOnClickListener {
-                customSurfaceView_write.changeColor("green")
-            }
-
-            /// リセットボタン
-            btn_board_reset.setOnClickListener {
-                customSurfaceView_write.reset()
-            }
-
+        /// カラーチェンジボタンにリスナーをセット
+        /// CustomSurfaceViewのchangeColorメソッドを呼び出す
+        blackBtn.setOnClickListener {
+            customSurfaceView_write.changeColor("black")
         }
+        redBtn.setOnClickListener {
+            customSurfaceView_write.changeColor("red")
+        }
+        greenBtn.setOnClickListener {
+            customSurfaceView_write.changeColor("green")
+        }
+
+        /// リセットボタン
+        btn_board_reset.setOnClickListener {
+            customSurfaceView_write.reset()
+        }
+
     }
 
     fun surface_watch_fun(customSurfaceView_read: CustomSurfaceView){
         Log.d("watch","massage")
 
-        //描画の停止
+//        描画の停止
         surfaceView_write.setOnTouchListener { v, event ->
             customSurfaceView_read.onTouch_watch(event)
         }
 
+        Log.d("bbb" , i.toString())
         val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("bbb" , "read----")
                 val draw_down = snapshot.getValue(Draw_data::class.java)
                 val x_string: String = draw_down?.x.toString()
                 val y_string = draw_down?.y.toString()
@@ -120,7 +131,10 @@ class RoomMainActivity : AppCompatActivity() {
                 val y: Float = y_string.toFloat()
 
                 Log.d("firebase", "down")
-                customSurfaceView_read.touchDown_watch(x, y)
+                if(i%2 == 1){
+                    customSurfaceView_read.touchDown_watch(x, y)
+                    Log.d("bbb" , i.toString())
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -139,7 +153,9 @@ class RoomMainActivity : AppCompatActivity() {
                     //string からfloatに変換
                     val x: Float = x_string.toFloat()
                     val y: Float = y_string.toFloat()
-                    customSurfaceView_read.touchMove_watch(x, y)
+                    if(i%2 == 1){
+                        customSurfaceView_read.touchMove_watch(x, y)
+                    }
                 }
 
                 Log.d("firebase", "move")
@@ -162,7 +178,10 @@ class RoomMainActivity : AppCompatActivity() {
                 val y: Float = y_string.toFloat()
 
                 Log.d("firebase", "up")
-                customSurfaceView_read.touchUp_watch(x, y)
+                if(i%2 == 1){
+                    customSurfaceView_read.touchUp_watch(x, y)
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
