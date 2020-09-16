@@ -1,5 +1,6 @@
 package com.example.chatkotlin.Room
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -37,9 +38,9 @@ class RoomMainActivity : AppCompatActivity() {
 
         btn.setOnClickListener{
             if(i%2==0){
-//                surface_write_fun(customSurfaceView,i)
+                surface_write_fun(customSurfaceView,i)
 
-                Log.d("num",surface_write_fun(customSurfaceView,i).toString())
+//                Log.d("num",surface_write_fun(customSurfaceView,i).toString())
             }else if(i%2==1){
 //                surface_write_fun(customSurfaceView,i)
                 surface_watch_fun(customSurfaceView)
@@ -65,6 +66,7 @@ class RoomMainActivity : AppCompatActivity() {
 //        }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun surface_write_fun(customSurfaceView_write: CustomSurfaceView, i: Int){
 
 
@@ -95,105 +97,16 @@ class RoomMainActivity : AppCompatActivity() {
                 customSurfaceView_write.reset()
             }
 
-        }else{
-            val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
-            pass_down.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val draw_down = snapshot.getValue(Draw_data::class.java)
-                    val x_string: String = draw_down?.x.toString()
-                    val y_string = draw_down?.y.toString()
-
-                    //string からfloatに変換
-                    val x: Float = x_string.toFloat()
-                    val y: Float = y_string.toFloat()
-
-                    Log.d("firebase", "down")
-                    customSurfaceView_write.touchDown_watch(x, y)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    //エラー処理
-                }
-            })
-
-            val pass_move = FirebaseDatabase.getInstance().getReference("/draw/draw_move")
-            pass_move.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val draw_down = snapshot.getValue(Draw_data::class.java)
-                    val x_string: String = draw_down?.x.toString()
-                    val y_string = draw_down?.y.toString()
-
-                    if (x_string != "" && y_string != "") {
-                        //string からfloatに変換
-                        val x: Float = x_string.toFloat()
-                        val y: Float = y_string.toFloat()
-                        customSurfaceView_write.touchMove_watch(x, y)
-                    }
-
-                    Log.d("firebase", "move")
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    //エラー処理
-                }
-            })
-
-            val pass_up = FirebaseDatabase.getInstance().getReference("/draw/draw_up")
-            pass_up.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val draw_down = snapshot.getValue(Draw_data::class.java)
-                    val x_string: String = draw_down?.x.toString()
-                    val y_string = draw_down?.y.toString()
-
-                    //string からfloatに変換
-                    val x: Float = x_string.toFloat()
-                    val y: Float = y_string.toFloat()
-
-                    Log.d("firebase", "up")
-                    customSurfaceView_write.touchUp_watch(x, y)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    //エラー処理
-                }
-            })
-
-            // 色を変えた場合の処理
-            val color_ref = FirebaseDatabase.getInstance().getReference("/draw/btn")
-            color_ref.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val btn_ref = snapshot.getValue(Button_board::class.java)
-                    val selectedcolor = btn_ref?.color
-                    customSurfaceView_write.changeColor_watch(selectedcolor!!)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    //エラー処理
-                }
-            })
-
-            // リセットボタンの処理
-            val reset_ref = FirebaseDatabase.getInstance().getReference("/draw/btn")
-            reset_ref.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val btn_ref = snapshot.getValue(Button_board::class.java)
-                    if (btn_ref?.reset == "reset") {
-                        customSurfaceView_write.reset_watch()
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    //エラー処理
-                }
-            })
         }
-
-
-
     }
 
     fun surface_watch_fun(customSurfaceView_read: CustomSurfaceView){
         Log.d("watch","massage")
+
+        //描画の停止
+        surfaceView_write.setOnTouchListener { v, event ->
+            customSurfaceView_read.onTouch_watch(event)
+        }
 
         val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {
