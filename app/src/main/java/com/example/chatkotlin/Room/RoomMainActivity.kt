@@ -38,8 +38,9 @@ class RoomMainActivity : AppCompatActivity() {
 
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
         layout_write()
-        i = 1
+        i = 0
         surface_watch_fun(customSurfaceView)
+        surface_write_fun(customSurfaceView)
 
         btn.setOnClickListener{
             if(i%2==1){
