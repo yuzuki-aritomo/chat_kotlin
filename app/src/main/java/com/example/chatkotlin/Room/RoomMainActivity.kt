@@ -47,6 +47,7 @@ class RoomMainActivity : AppCompatActivity() {
                 i = i + 1
                 //surfaceviewの無効化
                 customSurfaceView.setOnTouchListener { v, event ->
+                    Log.d("event", "not write")
                     customSurfaceView.onTouch_watch(event)
                 }
                 layout_watch()
@@ -66,7 +67,11 @@ class RoomMainActivity : AppCompatActivity() {
 
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         surfaceView_write.setOnTouchListener { v, event ->
-            customSurfaceView_write.onTouch(event)
+            if(i%2 == 0){
+                customSurfaceView_write.onTouch(event)
+            }
+            Log.d("event", "writing")
+            customSurfaceView_write.onTouch_watch(event)
         }
         /// カラーチェンジボタンにリスナーをセット
         /// CustomSurfaceViewのchangeColorメソッドを呼び出す
