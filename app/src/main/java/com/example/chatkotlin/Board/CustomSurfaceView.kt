@@ -229,6 +229,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
             "black" -> color = Color.BLACK
             "red" -> color = Color.RED
             "green" -> color = Color.GREEN
+            "white" -> color = Color.WHITE
         }
         paint!!.color = color as Int
 

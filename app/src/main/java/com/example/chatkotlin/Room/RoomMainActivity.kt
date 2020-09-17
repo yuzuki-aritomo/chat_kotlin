@@ -10,6 +10,7 @@ import android.view.SurfaceView
 import android.view.View
 import android.widget.Button
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.example.chatkotlin.Board.*
 import com.example.chatkotlin.R
 import com.google.firebase.database.DataSnapshot
@@ -24,6 +25,7 @@ import kotlin.system.exitProcess
 class RoomMainActivity : AppCompatActivity() {
     var i: Int = 0
     var room_id: String= ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_main)
@@ -35,31 +37,50 @@ class RoomMainActivity : AppCompatActivity() {
         val customSurfaceView = CustomSurfaceView(this, surfaceView_write)
 
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
-        i = 1
+        layout_write()
+        i = 0
         surface_watch_fun(customSurfaceView)
+        surface_write_fun(customSurfaceView)
 
         btn.setOnClickListener{
             if(i%2==1){
                 i = i + 1
-                surface_write_fun(customSurfaceView)
                 layout_write()
+                surface_write_fun(customSurfaceView)
+
             }else if(i%2==0){
                 i = i + 1
                 //surfaceviewの無効化
-                customSurfaceView.setOnTouchListener { v, event ->
-                    Log.d("event", "not write")
-                    customSurfaceView.onTouch_watch(event)
-                }
+//                customSurfaceView.setOnTouchListener { v, event ->
+//                    Log.d("event", "not write")
+//                    customSurfaceView.onTouch_watch(event)
+//                }
                 layout_watch()
             }
         }
     }
 
     fun layout_write(){
+        btn_board_reset.setVisibility(View.VISIBLE)
+        room_btn_change_color.setVisibility(View.VISIBLE)
+        whiteBtn.setVisibility(View.VISIBLE)
 
+        room_message_btn.setVisibility(View.INVISIBLE)
+        room_message_text.setVisibility(View.INVISIBLE)
+        blackBtn.setVisibility(View.INVISIBLE)
+        redBtn.setVisibility(View.INVISIBLE)
+        greenBtn.setVisibility(View.INVISIBLE)
     }
     fun layout_watch(){
-        btn_board_reset.setVisibility(View.INVISIBLE);
+        btn_board_reset.setVisibility(View.INVISIBLE)
+        room_btn_change_color.setVisibility(View.INVISIBLE)
+        whiteBtn.setVisibility(View.INVISIBLE)
+        blackBtn.setVisibility(View.INVISIBLE)
+        redBtn.setVisibility(View.INVISIBLE)
+        greenBtn.setVisibility(View.INVISIBLE)
+
+        room_message_btn.setVisibility(View.VISIBLE)
+        room_message_text.setVisibility(View.VISIBLE)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -77,12 +98,36 @@ class RoomMainActivity : AppCompatActivity() {
         /// CustomSurfaceViewのchangeColorメソッドを呼び出す
         blackBtn.setOnClickListener {
             customSurfaceView_write.changeColor("black")
+            blackBtn.setVisibility(View.INVISIBLE)
+            redBtn.setVisibility(View.INVISIBLE)
+            greenBtn.setVisibility(View.INVISIBLE)
         }
         redBtn.setOnClickListener {
             customSurfaceView_write.changeColor("red")
+            blackBtn.setVisibility(View.INVISIBLE)
+            redBtn.setVisibility(View.INVISIBLE)
+            greenBtn.setVisibility(View.INVISIBLE)
         }
         greenBtn.setOnClickListener {
             customSurfaceView_write.changeColor("green")
+            blackBtn.setVisibility(View.INVISIBLE)
+            redBtn.setVisibility(View.INVISIBLE)
+            greenBtn.setVisibility(View.INVISIBLE)
+        }
+        //消しゴム
+        whiteBtn.setOnClickListener {
+            customSurfaceView_write.changeColor("white")
+        }
+        room_btn_change_color.setOnClickListener {
+            if(blackBtn.getVisibility() == View.INVISIBLE){
+                blackBtn.setVisibility(View.VISIBLE)
+                redBtn.setVisibility(View.VISIBLE)
+                greenBtn.setVisibility(View.VISIBLE)
+            }else{
+                blackBtn.setVisibility(View.INVISIBLE)
+                redBtn.setVisibility(View.INVISIBLE)
+                greenBtn.setVisibility(View.INVISIBLE)
+            }
         }
 
         /// リセットボタン
