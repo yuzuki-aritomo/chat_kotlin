@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/common_google_signin_btn_text_dark_default"
     tools:context=".Board.BoardActivity">
 
     <Button
@@ -20,7 +21,7 @@
     <Button
         android:id="@+id/redBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:text="あか"
         app:layout_constraintEnd_toStartOf="@+id/greenBtn"
@@ -40,16 +41,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SurfaceView
-        android:id="@+id/surfaceView"
+        android:id="@+id/surfaceView_write"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/resetBtn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_board_reset"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/redBtn" />
 
     <Button
-        android:id="@+id/resetBtn"
+        android:id="@+id/btn_board_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -67,5 +68,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/resetBtn" />
+        app:layout_constraintStart_toEndOf="@+id/btn_board_reset" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,13 @@
 package com.example.chatkotlin.Board
 
+import android.content.Intent
 import android.graphics.Path
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import com.example.chatkotlin.R
+import com.example.chatkotlin.Room.RoomMainActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -17,13 +20,20 @@ class AnotherBoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_another_board)
 
+
         /// CustomSurfaceViewのインスタンスを生成しonTouchリスナーをセット
         val customSurfaceView = CustomSurfaceView_read(this, surfaceView_read)
 //        surfaceView_read.setOnTouchListener { v, event ->
 //            customSurfaceView.onTouch(event)
 //        }
-
-        val pass_down = FirebaseDatabase.getInstance().getReference("/draw/draw_down")
+        //activityの変更
+        val button: Button = findViewById(R.id.btn_to_write_board)
+        button.setOnClickListener {
+            customSurfaceView.unlockCanvasAndPost()
+            val intent = Intent(this, RoomMainActivity::class.java)
+            startActivity(intent)
+        }
+        val pass_down = FirebaseDatabase.getInstance().getReference("draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val draw_down =  snapshot.getValue(Draw_data::class.java)

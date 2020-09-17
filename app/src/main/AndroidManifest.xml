@@ -9,14 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Board.AnotherBoardActivity">
-        </activity>
-        <activity android:name=".Board.BoardActivity">
+        <activity android:name=".Room.RoomMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Room.RoomGameActivity">
+
+        </activity>
+        <activity android:name=".Room.RoomStartActivity" />
+        <activity android:name=".Room.RoomChoiceActivity" />
+        <activity android:name=".Board.AnotherBoardActivity" />
+        <activity android:name=".Board.BoardActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Message.ChatlogActivity" />
         <activity android:name=".Message.LatestMassageActivity">
