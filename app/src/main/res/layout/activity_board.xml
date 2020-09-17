@@ -7,38 +7,51 @@
     android:background="@color/common_google_signin_btn_text_dark_default"
     tools:context=".Board.BoardActivity">
 
+    <EditText
+        android:id="@+id/room_message_text"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:hint="ひらがなでお題を書いてください"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/room_message_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/surfaceView_write" />
+
     <Button
         android:id="@+id/blackBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/frame_style_black"
         android:text="くろ"
-        app:layout_constraintEnd_toStartOf="@+id/redBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toTopOf="@+id/room_btn_change_color"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/redBtn"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/frame_style_red"
         android:text="あか"
-        app:layout_constraintEnd_toStartOf="@+id/greenBtn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/blackBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toTopOf="@+id/blackBtn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/greenBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/frame_style_green"
         android:text="みどり"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/redBtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toTopOf="@+id/redBtn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <SurfaceView
         android:id="@+id/surfaceView_write"
@@ -46,27 +59,56 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_board_reset"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/redBtn" />
-
-    <Button
-        android:id="@+id/btn_board_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="リセット"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btn_to_another_board_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="56dp"
         android:text="next to read only"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/btn_board_reset" />
+
+    <Button
+        android:id="@+id/room_message_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="送信"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/whiteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="消しゴム"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/room_btn_change_color" />
+
+    <Button
+        android:id="@+id/room_btn_change_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="色変更"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/room_message_text" />
+
+    <Button
+        android:id="@+id/btn_board_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全消し"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/whiteBtn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
