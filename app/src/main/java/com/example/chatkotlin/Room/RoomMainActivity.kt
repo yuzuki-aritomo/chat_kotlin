@@ -1,56 +1,56 @@
 package com.example.chatkotlin.Room
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.SurfaceView
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
-import com.example.chatkotlin.Board.*
+import androidx.appcompat.app.AppCompatActivity
+import com.example.chatkotlin.Board.Button_board
+import com.example.chatkotlin.Board.CustomSurfaceView
+import com.example.chatkotlin.Board.Draw_data
 import com.example.chatkotlin.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_another_board.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_board.*
-import kotlinx.android.synthetic.main.activity_room_main.*
-import kotlin.system.exitProcess
+
 
 class RoomMainActivity : AppCompatActivity() {
     var i: Int = 0
     var room_id: String= "room_extra"
     var user_id: String= "room_extra"
-
+    var user_count: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-//        setContentView(R.layout.activity_room_main)
         //room_idの設定
-//        val room_id = intent.getStringExtra("room_id")//room_id: room_1
+        room_id = intent.getStringExtra("room_id")//room_id: room_1
+        user_id = intent.getStringExtra("user_id")//room_id: room_1
+        user_count = intent.getStringExtra("user_count").toInt()//room_id: room_1
+
         room_id = "room_1"
-        user_id = "user_1"
+        user_id = "-MHUSFkLXeAht73QVyuz"
+        user_count = 5
 
         setContentView(R.layout.activity_board)
 
         val customSurfaceView = CustomSurfaceView(this, surfaceView_write)
         //初期設定
+        //customSurfaceViewにroom_idを渡す
         customSurfaceView.set_room_id(room_id)
+        //firebaseに初期値を入れる
         set_firebase_content()
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
         layout_write()
         i = 0
         firebase_watch(customSurfaceView)
         surface_write_fun(customSurfaceView)
+
+
 
         //それぞれのviewでの切り替え
         btn.setOnClickListener{
@@ -146,7 +146,6 @@ class RoomMainActivity : AppCompatActivity() {
                 close_color_btn()
             }
         }
-
         /// リセットボタン
         btn_board_reset.setOnClickListener {
             customSurfaceView_write.reset()
@@ -173,7 +172,7 @@ class RoomMainActivity : AppCompatActivity() {
     }
     
     fun firebase_watch(customSurfaceView_read: CustomSurfaceView){
-        Log.d("watch","massage")
+        Log.d("watch", "massage")
 
 //        描画の停止
         surfaceView_write.setOnTouchListener { v, event ->
@@ -185,17 +184,17 @@ class RoomMainActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val draw_down = snapshot.getValue(Draw_data::class.java)
 
-                val x_string: String = draw_down?.x.toString() ?:"-1"
-                val y_string: String = draw_down?.y.toString() ?:"-1"
+                val x_string: String = draw_down?.x.toString() ?: "-1"
+                val y_string: String = draw_down?.y.toString() ?: "-1"
 
                 //string からfloatに変換
-                if (x_string != "" && y_string != ""){
+                if (x_string != "" && y_string != "") {
                     val x: Float = x_string.toFloat()
                     val y: Float = y_string.toFloat()
 
-                    if(i%2 == 1){
-                        customSurfaceView_read.touchDown_watch( x, y)
-                        Log.d("bbb" , i.toString())
+                    if (i % 2 == 1) {
+                        customSurfaceView_read.touchDown_watch(x, y)
+                        Log.d("bbb", i.toString())
                     }
                 }
             }
@@ -212,11 +211,11 @@ class RoomMainActivity : AppCompatActivity() {
                 val x_string: String = draw_down?.x.toString()
                 val y_string: String = draw_down?.y.toString()
 
-                if(x_string != "" && y_string != ""){
+                if (x_string != "" && y_string != "") {
                     //string からfloatに変換
                     val x: Float = x_string.toFloat()
                     val y: Float = y_string.toFloat()
-                    if(i%2 == 1){
+                    if (i % 2 == 1) {
                         customSurfaceView_read.touchMove_watch(x, y)
                     }
                 }
@@ -232,18 +231,19 @@ class RoomMainActivity : AppCompatActivity() {
         pass_up.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val draw_down = snapshot.getValue(Draw_data::class.java)
-                val x_string: String = draw_down?.x.toString() ?:"-1"
-                val y_string: String = draw_down?.y.toString() ?:"-1"
+                val x_string: String = draw_down?.x.toString() ?: "-1"
+                val y_string: String = draw_down?.y.toString() ?: "-1"
 
                 //string からfloatに変換
                 val x: Float = x_string.toFloat()
                 val y: Float = y_string.toFloat()
 
-                if(i%2 == 1){
+                if (i % 2 == 1) {
                     customSurfaceView_read.touchUp_watch(x, y)
                 }
 
             }
+
             override fun onCancelled(error: DatabaseError) {
                 //エラー処理
             }
