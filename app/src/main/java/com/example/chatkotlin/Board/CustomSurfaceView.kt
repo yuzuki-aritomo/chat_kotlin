@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 
-class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
+class CustomSurfaceView: SurfaceHolder.Callback{
     //private
     private var surfaceHolder: SurfaceHolder? = null
     private var paint: Paint? = null
@@ -30,7 +30,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     var width: Int? = null
     var height: Int? = null
 
-    constructor(context: Context, surfaceView: SurfaceView) : super(context) {
+    constructor(context: Context, surfaceView: SurfaceView){
         surfaceHolder = surfaceView.holder
 
         Log.d("room","massage from constructor")
@@ -49,8 +49,8 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         height = size.y
 
         /// 背景を透過させ、一番上に表示
-        surfaceHolder!!.setFormat(PixelFormat.TRANSPARENT)
-        surfaceView.setZOrderOnTop(true)
+//        surfaceHolder!!.setFormat(PixelFormat.TRANSPARENT)
+//        surfaceView.setZOrderOnTop(true)
 
         /// コールバック
         surfaceHolder!!.addCallback(this)
@@ -103,6 +103,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     }
     /// bitmapとcanvasの初期化
     private fun initializeBitmap() {
+        Log.d("test","-------------")
         if (prevBitmap == null) {
             //bitmapがない時作る
             prevBitmap = Bitmap.createBitmap(width!!, height!!, Bitmap.Config.ARGB_8888)
@@ -117,7 +118,10 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
             Log.d("room","massage from prevCanvas")
         }
 
-        prevCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
+        prevCanvas!!.drawColor(Color.WHITE)
+        val canvas = surfaceHolder!!.lockCanvas()
+        canvas!!.drawColor(Color.WHITE)
+        surfaceHolder!!.unlockCanvasAndPost(canvas)
     }
     private fun draw(pathInfo: pathInfo) {
         canvas = Canvas()
@@ -130,7 +134,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         canvas = surfaceHolder!!.lockCanvas()
 
         //// キャンバスのクリア
-        canvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
+        canvas!!.drawColor(Color.WHITE)
 
         /// 前回のビットマップをキャンバスに描画
         canvas!!.drawBitmap(prevBitmap!!, 0F, 0F, null)
@@ -220,7 +224,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         ///初期化とキャンバスクリア
         initializeBitmap()
         canvas = surfaceHolder!!.lockCanvas()
-        canvas?.drawColor(0, PorterDuff.Mode.CLEAR)
+        canvas?.drawColor(Color.WHITE)
         surfaceHolder!!.unlockCanvasAndPost(canvas)
 
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/btn/reset")
@@ -280,7 +284,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         ///初期化とキャンバスクリア
         initializeBitmap()
         canvas = surfaceHolder!!.lockCanvas()
-        canvas?.drawColor(0, PorterDuff.Mode.CLEAR)
+        canvas?.drawColor(Color.WHITE)
         surfaceHolder!!.unlockCanvasAndPost(canvas)
     }
     fun changeColor_watch(colorSelected: String) {
