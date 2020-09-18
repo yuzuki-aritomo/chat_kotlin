@@ -6,6 +6,11 @@ import android.os.Bundle
 import android.widget.Button
 import com.example.chatkotlin.Board.AnotherBoardActivity
 import com.example.chatkotlin.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_room_start.*
 
 class RoomChoiceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,10 +27,9 @@ class RoomChoiceActivity : AppCompatActivity() {
             val intent = Intent(this, RoomStartActivity::class.java)
             intent.putExtra("room_id", "room_1")
             startActivity(intent)
-            //firebaseにユーザーの追加
 
         }
-        //Room1btn
+        //Room2btn
         val room2: Button = findViewById(R.id.room_start_2)
         room2.setOnClickListener {
             val intent = Intent(this, RoomStartActivity::class.java)
@@ -35,9 +39,19 @@ class RoomChoiceActivity : AppCompatActivity() {
 
     }
     //firebaseからユーザー数の確認する関数(引数：room_id  戻り値：bool)
+    fun user_count(room_id: String){
+        val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
+        var user_count = "0"
+        ref_user.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                user_count = snapshot.childrenCount.toString()
+            }
+            override fun onCancelled(error: DatabaseError) {
+                //エラー処理
+            }
+        })
+    }
 
     //room_id/IfGameOrNot を確認する関数(引数：room_id  戻り値：bool)
-
-    //firebaseにユーザーの追加する関数(引数：room_id)
 
 }

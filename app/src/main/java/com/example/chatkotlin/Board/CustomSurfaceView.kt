@@ -17,6 +17,8 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     private var paint: Paint? = null
     private var path: Path? = null
 
+    var room_id = "room_extra"
+
     var color: Int? = null
     var prevBitmap: Bitmap? = null
     var anotherBitmap: Bitmap? = null
@@ -89,6 +91,9 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 //        width = null
 //        height = null
     }
+    fun set_room_id(room: String){
+        room_id = room
+    }
     fun unlockCanvasAndPost(){
         canvas = Canvas()
         /// ロックしてキャンバスを取得
@@ -151,7 +156,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
     ///// path クラスで描画するポイントを保持
     ///    ACTION_DOWN 時の処理
     private fun touchDown(x: Float, y: Float) {
-        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val database = FirebaseDatabase.getInstance().getReference("Room/$room_id//draw")
 
         val x_width = x/width!!
         val y_height = y/height!!
@@ -170,7 +175,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     ///    ACTION_MOVE 時の処理
     private fun touchMove(x: Float, y: Float) {
-        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val database = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw")
         val x_width = x/width!!
         val y_width = y/height!!
         val x_data = x_width.toString()
@@ -184,7 +189,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
 
     ///    ACTION_UP 時の処理
     private fun touchUp(x: Float, y: Float) {
-        val database = FirebaseDatabase.getInstance().getReference("/draw")
+        val database = FirebaseDatabase.getInstance().getReference("Room/$room_id//draw")
         val x_width = x/width!!
         val y_width = y/height!!
         val x_data = x_width.toString()
@@ -218,7 +223,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         canvas?.drawColor(0, PorterDuff.Mode.CLEAR)
         surfaceHolder!!.unlockCanvasAndPost(canvas)
 
-        val ref = FirebaseDatabase.getInstance().getReference("/draw/btn/reset")
+        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/btn/reset")
         ref.setValue("reset")
         ref.setValue("a")
     }
@@ -233,7 +238,7 @@ class CustomSurfaceView: SurfaceView, SurfaceHolder.Callback{
         }
         paint!!.color = color as Int
 
-        val ref = FirebaseDatabase.getInstance().getReference("/draw/btn/color")
+        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/btn/color")
         ref.setValue(colorSelected)
     }
 
