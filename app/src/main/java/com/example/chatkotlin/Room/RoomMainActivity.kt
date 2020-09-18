@@ -1,6 +1,7 @@
 package com.example.chatkotlin.Room
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -25,15 +27,21 @@ import kotlin.system.exitProcess
 class RoomMainActivity : AppCompatActivity() {
     var i: Int = 0
     var room_id: String= "room_extra"
+    var user_id: String= "room_extra"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 //        setContentView(R.layout.activity_room_main)
         //room_idの設定
 //        val room_id = intent.getStringExtra("room_id")//room_id: room_1
         room_id = "room_1"
+        user_id = "user_1"
 
         setContentView(R.layout.activity_board)
+
         val customSurfaceView = CustomSurfaceView(this, surfaceView_write)
         //初期設定
         customSurfaceView.set_room_id(room_id)
@@ -41,7 +49,7 @@ class RoomMainActivity : AppCompatActivity() {
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
         layout_write()
         i = 0
-        surface_watch_fun(customSurfaceView)
+        firebase_watch(customSurfaceView)
         surface_write_fun(customSurfaceView)
 
         //それぞれのviewでの切り替え
@@ -59,6 +67,20 @@ class RoomMainActivity : AppCompatActivity() {
 //                    customSurfaceView.onTouch_watch(event)
 //                }
                 layout_watch()
+                surface_watch_fun(customSurfaceView)
+            }
+        }
+    }
+    fun surface_watch_fun(customSurfaceView: CustomSurfaceView){
+
+        //messageの送信
+        room_message_btn.setOnClickListener {
+            if(room_message_text.text.toString() != "null"){
+                val text: String = room_message_text.text.toString()
+                val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message").push()
+                ref.child("text").setValue(text)
+                ref.child("from_user_id").setValue(user_id)
+                room_message_text.text = null
             }
         }
     }
@@ -150,7 +172,7 @@ class RoomMainActivity : AppCompatActivity() {
         greenBtn.setVisibility(View.INVISIBLE)
     }
     
-    fun surface_watch_fun(customSurfaceView_read: CustomSurfaceView){
+    fun firebase_watch(customSurfaceView_read: CustomSurfaceView){
         Log.d("watch","massage")
 
 //        描画の停止
