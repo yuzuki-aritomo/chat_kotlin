@@ -241,4 +241,19 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textview_announce_write"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/frame_text_write"
+        android:gravity="center_horizontal"
+        android:text="あなたは\n「絵を書く人」です\nお題の絵を書きましょう"
+        android:textColor="@android:color/holo_red_dark"
+        android:padding="4dp"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
