@@ -250,10 +250,8 @@ class CustomSurfaceView: SurfaceHolder.Callback{
     //watchの修正
     //-----------------------------------
     fun onTouch_watch(event: MotionEvent) : Boolean{
-
         return true
     }
-
     fun touchDown_watch(x: Float, y: Float) {
         val x_width = x*width!!
         val y_width = y*height!!
@@ -269,7 +267,6 @@ class CustomSurfaceView: SurfaceHolder.Callback{
         draw(pathInfo(path!!, color!!))
     }
     fun touchUp_watch(x: Float, y: Float) {
-
         val x_width = x*width!!
         val y_width = y*height!!
         /// 前回のキャンバスを描画 path がnullの時エラー発生
@@ -292,6 +289,7 @@ class CustomSurfaceView: SurfaceHolder.Callback{
             "black" -> color = Color.BLACK
             "red" -> color = Color.RED
             "green" -> color = Color.GREEN
+            "white" -> color = Color.WHITE
         }
         paint!!.color = color as Int
     }
