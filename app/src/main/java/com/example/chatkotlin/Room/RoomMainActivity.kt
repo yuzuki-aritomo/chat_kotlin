@@ -249,7 +249,6 @@ class RoomMainActivity : AppCompatActivity() {
             }
         }
         aa++
-
     }
 
     fun layout_write(){
@@ -455,15 +454,16 @@ class RoomMainActivity : AppCompatActivity() {
             }
         })
 
-        //user情報の取得
+        //message情報の取得
         var aa = 0
-        val ref_message = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
+        val ref_message = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message/text")
         ref_message.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val answer_text = snapshot.child("text").getValue()
-                val answer_user_id = snapshot.child("from_user_id").getValue()
+                val answer_text = snapshot.getValue()
+//                val answer_user_id = snapshot.child("from_user_id").getValue()
                 if(aa>0){
                     set_answer(answer_text.toString())
+                    Log.d("message","------")
                 }
                 aa++
             }
