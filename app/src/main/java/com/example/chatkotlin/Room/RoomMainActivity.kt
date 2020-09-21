@@ -34,22 +34,22 @@ class RoomMainActivity : AppCompatActivity() {
     var user_count: Int = 0
     var game_set: Int = 1
     var game_set_max: Int = 0
-    var answer = "りんご" //お題の答え
+    var answer = "aaa" //お題の答え
     var user_list = arrayOf<String>("aa","aa","aa","aa","aa")
-
     val hand0= Handler()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //room_idの設定
         room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
-        user_id = intent.getStringExtra("user_id")//room_id: room_1
-        user_count = intent.getStringExtra("user_count").toInt()//room_id: room_1
+        user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
+        user_count = intent.getStringExtra("user_count").toInt() //room_id: room_1
 
 //        room_id = "room_1"
 //        user_id = "-MHUSFkLXeAht73QVyuz"
-        user_count = 2
+        user_count = 5
 
         //gameのセット数
         when(user_count){
@@ -99,16 +99,16 @@ class RoomMainActivity : AppCompatActivity() {
         })
 
 
-        var game_set = 1
+        game_set = 1
 
         //データベースを削除しなければエラー（古い順化から取得するため）
         //代入の前に読み込んでしまうため遅らせる
         hand0.postDelayed(Runnable {
-            Log.d("user_list",user_list[0])
-            Log.d("user_list",user_list[1])
-            Log.d("user_list","user_id:$user_id")
-            Log.d("user_list","user_count:$user_count")
-            Log.d("user_list",user_list[game_set % user_count])
+//            Log.d("user_list",user_list[0])
+//            Log.d("user_list",user_list[1])
+//            Log.d("user_list","user_id:$user_id")
+//            Log.d("user_list","user_count:$user_count")
+//            Log.d("user_list",user_list[game_set % user_count])
             if(user_id == user_list[game_set % user_count]){
                 //writeの関数
                 //お題の選定とfirebaseに保存
@@ -124,10 +124,10 @@ class RoomMainActivity : AppCompatActivity() {
                 layout_watch()
                 surface_watch_fun(customSurfaceView)
             }
+            game_set++
         },500)
         //game_set=1
 
-        //一回目の呼び出し
 
 //        Log.d("user_list", (game_set%user_count).toString())
 //        Log.d("user_list",user_list[game_set % user_count].toString())
@@ -135,23 +135,44 @@ class RoomMainActivity : AppCompatActivity() {
 
 
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 2回目以降
+        val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
+        ref_set.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                Log.d("user_list",user_list[0])
+                Log.d("user_list",user_list[1])
+                Log.d("user_list","user_id:$user_id")
+                Log.d("user_list","user_count:$user_count")
+                Log.d("user_list",user_list[game_set % user_count])
+                //gameが終了するかどうか
+                if(game_set+1 == game_set_max){
+                    //ゲームの終了画面に移行
+                    Log.d("test","end game")
+                    //Firebaseの初期化
+                }
+                //game_set % user_count の値の人が書く人
+                if(user_id == user_list[game_set % user_count]){
+                    //writeの関数
+                    i = 2
+                    layout_write()
+                    surface_write_fun(customSurfaceView)
+                }else{
+                    //watchの関数
+                    //watchのレイアウト
+                    i = 1
+                    layout_watch()
+                    surface_watch_fun(customSurfaceView)
+                }
+                //game_setが終われば
+                game_set++
+            }
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
 
         //答えの表示
 
-        //game_set % user_count の値の人が書く人
-        if(user_id == user_list[game_set % user_count]){
-            //writeの関数
 
-        }else{
-            //watchの関数
-
-        }
-        //game_setが終われば
-        game_set++
-        //gameが終了するかどうか
-        if(game_set+1 == game_set_max){
-            //ゲームの終了画面に移行
-        }
 
 
 
@@ -174,7 +195,9 @@ class RoomMainActivity : AppCompatActivity() {
 ////                surface_watch_fun(customSurfaceView)
 //            }
             Log.d("user_",user_list[game_set % user_count])
-            game_set++
+//            game_set++
+            val ref__ = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
+            ref__.child("game_set").setValue(game_set)
         }
     }
 
@@ -187,9 +210,8 @@ class RoomMainActivity : AppCompatActivity() {
                 val text: String = room_message_text.text.toString()
                 if(text == answer){
                     //firebaseに保存
-                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/set")
+                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
                     refe.setValue(game_set)
-                    return@setOnClickListener
                 }
                 val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
                 ref.child("text").setValue(text)
@@ -226,7 +248,6 @@ class RoomMainActivity : AppCompatActivity() {
             }
         }
         aa++
-
     }
 
     fun layout_write(){
@@ -312,7 +333,7 @@ class RoomMainActivity : AppCompatActivity() {
         pass_down.child("draw/draw_down/y").setValue("0")
         pass_down.child("draw/btn/color").setValue("black")
         pass_down.child("draw/btn/reset").setValue("a")
-        pass_down.child("game/answer").setValue("りんご")
+        pass_down.child("game/answer").setValue("aaa")
         pass_down.child("Message/text").setValue("aaa")
         pass_down.child("game/from_user_id").setValue("bbb")
     }
@@ -432,15 +453,16 @@ class RoomMainActivity : AppCompatActivity() {
             }
         })
 
-        //user情報の取得
+        //message情報の取得
         var aa = 0
-        val ref_message = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
+        val ref_message = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message/text")
         ref_message.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val answer_text = snapshot.child("text").getValue()
-                val answer_user_id = snapshot.child("from_user_id").getValue()
+                val answer_text = snapshot.getValue()
+//                val answer_user_id = snapshot.child("from_user_id").getValue()
                 if(aa>0){
                     set_answer(answer_text.toString())
+                    Log.d("message","------")
                 }
                 aa++
             }
