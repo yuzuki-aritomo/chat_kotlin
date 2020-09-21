@@ -34,17 +34,18 @@ class RoomMainActivity : AppCompatActivity() {
     var user_count: Int = 0
     var game_set: Int = 1
     var game_set_max: Int = 0
-    var answer = "りんご" //お題の答え
+    var answer = "aaa" //お題の答え
     var user_list = arrayOf<String>("aa","aa","aa","aa","aa")
     val hand0= Handler()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //room_idの設定
         room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
-        user_id = intent.getStringExtra("user_id")//room_id: room_1
-        user_count = intent.getStringExtra("user_count").toInt()//room_id: room_1
+        user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
+        user_count = intent.getStringExtra("user_count").toInt() //room_id: room_1
 
 //        room_id = "room_1"
 //        user_id = "-MHUSFkLXeAht73QVyuz"
@@ -98,7 +99,7 @@ class RoomMainActivity : AppCompatActivity() {
         })
 
 
-        var game_set = 1
+        game_set = 1
 
         //データベースを削除しなければエラー（古い順化から取得するため）
         //代入の前に読み込んでしまうため遅らせる
@@ -163,7 +164,6 @@ class RoomMainActivity : AppCompatActivity() {
                 }
                 //game_setが終われば
                 game_set++
-
             }
             override fun onCancelled(p0: DatabaseError) {
 
@@ -210,9 +210,8 @@ class RoomMainActivity : AppCompatActivity() {
                 val text: String = room_message_text.text.toString()
                 if(text == answer){
                     //firebaseに保存
-                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/set")
+                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
                     refe.setValue(game_set)
-                    return@setOnClickListener
                 }
                 val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
                 ref.child("text").setValue(text)
@@ -334,7 +333,7 @@ class RoomMainActivity : AppCompatActivity() {
         pass_down.child("draw/draw_down/y").setValue("0")
         pass_down.child("draw/btn/color").setValue("black")
         pass_down.child("draw/btn/reset").setValue("a")
-        pass_down.child("game/answer").setValue("りんご")
+        pass_down.child("game/answer").setValue("aaa")
         pass_down.child("Message/text").setValue("aaa")
         pass_down.child("game/from_user_id").setValue("bbb")
     }
