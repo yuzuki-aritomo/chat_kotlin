@@ -61,10 +61,7 @@ class RoomMainActivity : AppCompatActivity() {
             4 -> game_set_max = 4
             5 -> game_set_max = 5
         }
-
-//        val ref_gameset = FirebaseDatabase.getInstance().getReference("Room/$room_id/Game")
-//        ref_gameset.child("game_set_max").setValue(game_set_max)
-
+        //layoutの初期化
         setContentView(R.layout.activity_board)
         layout_construct()
 
@@ -102,29 +99,6 @@ class RoomMainActivity : AppCompatActivity() {
         })
         game_set = 1
 
-        //データベースを削除しなければエラー（古い順化から取得するため）
-        //代入の前に読み込んでしまうため遅らせる
-//        hand0.postDelayed(Runnable {
-//            if(user_id == user_list[game_set % user_count]){
-//                //writeの関数
-//                //お題の選定とfirebaseに保存
-//
-//                //writeのレイアウト
-//                i = 2
-//                layout_write("お題")
-//                surface_write_fun(customSurfaceView)
-//            }else{
-//                //watchの関数
-//                //watchのレイアウト
-//                i = 1
-//                layout_watch()
-//                surface_watch_fun(customSurfaceView)
-//            }
-//            game_set++
-//        },500)
-        //game_set=1
-
-
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
         var game_set_num = 0
         val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
@@ -146,11 +120,12 @@ class RoomMainActivity : AppCompatActivity() {
                     customSurfaceView.reset()
 
                     //gameが終了するかどうか
-                    if(game_set+1 == game_set_max){
+                    if(game_set-1 == game_set_max){
                         //ゲームの終了画面に移行
                         Log.d("test","end game")
-                        //Firebaseの初期化
-                        FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
+                        val intent = Intent(applicationContext, RoomResultActivity::class.java)
+                        startActivity(intent)
+                        Thread.sleep(3000)
                     }
                     //game_set % user_count の値の人が書く人
                     if(user_id == user_list[game_set % user_count]){
@@ -170,8 +145,7 @@ class RoomMainActivity : AppCompatActivity() {
                     }
                     //game_setが終われば
                     game_set++
-
-                },4000)
+                },3000)
             }
             override fun onCancelled(p0: DatabaseError) {
 
