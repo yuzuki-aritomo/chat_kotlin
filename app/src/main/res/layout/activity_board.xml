@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_google_signin_btn_text_dark_default"
-    tools:context=".Board.BoardActivity">
+    android:background="@color/common_google_signin_btn_text_dark_default">
 
     <SurfaceView
         android:id="@+id/surfaceView_write"
@@ -248,13 +247,14 @@
         android:layout_marginTop="88dp"
         android:background="@drawable/frame_text_write"
         android:gravity="center_horizontal"
+        android:padding="4dp"
         android:text="あなたは\n「絵を書く人」です\nお題の絵を書きましょう"
         android:textColor="@android:color/holo_red_dark"
-        android:padding="4dp"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+        app:layout_constraintTop_toTopOf="@+id/surfaceView_write"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textview_announce_watch"
@@ -269,7 +269,8 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+        app:layout_constraintTop_toTopOf="@+id/surfaceView_write"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textView_odai"
@@ -278,8 +279,23 @@
         android:layout_marginTop="8dp"
         android:text="お題"
         android:textSize="18sp"
+        android:textColor="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+
+    <TextView
+        android:id="@+id/textView_answer_result"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="113dp"
+        android:background="@drawable/frame_anser_result"
+        android:gravity="center"
+        android:text="答え\n「お題」"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
