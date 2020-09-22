@@ -49,7 +49,7 @@ class RoomMainActivity : AppCompatActivity() {
 
 //        room_id = "room_1"
 //        user_id = "-MHUSFkLXeAht73QVyuz"
-        user_count = 5
+//        user_count = 5
 
         //csvファイルの読み込み
         readQuestionData()
@@ -100,8 +100,6 @@ class RoomMainActivity : AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-
-
         game_set = 1
 
         //データベースを削除しなければエラー（古い順化から取得するため）
@@ -128,13 +126,25 @@ class RoomMainActivity : AppCompatActivity() {
 
 
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
-        
+        var game_set_num = 0
         val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
         ref_set.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 //ゲームスタートと答えの表示
-
+                if(game_set_num==0){
+                    //スタートの表示
+                    textView_answer_result.text = "ゲームスタート"
+                    textView_answer_result.setVisibility(View.VISIBLE)
+                }else{
+                    //答えの表示
+                    textView_answer_result.text = "答え\n「$answer」"
+                    textView_answer_result.setVisibility(View.VISIBLE)
+                }
+                game_set_num++
                 hand0.postDelayed(Runnable {
+                    textView_answer_result.setVisibility(View.GONE)
+                    customSurfaceView.reset()
+
                     //gameが終了するかどうか
                     if(game_set+1 == game_set_max){
                         //ゲームの終了画面に移行
@@ -172,9 +182,6 @@ class RoomMainActivity : AppCompatActivity() {
 
 
 
-
-
-
         //それぞれのviewでの切り替え
         btn.setOnClickListener{
 //            if(i%2==1){
@@ -208,8 +215,9 @@ class RoomMainActivity : AppCompatActivity() {
                 val text: String = room_message_text.text.toString()
                 if(text == answer){
                     //firebaseに保存
-                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
-                    refe.setValue(game_set)
+                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
+                    refe.child("game_set").setValue(game_set)
+                    refe.child("answer").setValue(text)
                 }
                 val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
                 ref.child("text").setValue(text)
@@ -256,7 +264,12 @@ class RoomMainActivity : AppCompatActivity() {
         textview_announce_write.setVisibility(View.GONE)
         textview_announce_watch.setVisibility(View.GONE)
         textView_odai.setVisibility(View.GONE)
+        textView_answer_result.setVisibility(View.GONE)
 
+        //write button
+        btn_board_reset.setVisibility(View.INVISIBLE)
+        room_btn_change_color.setVisibility(View.INVISIBLE)
+        whiteBtn.setVisibility(View.INVISIBLE)
         blackBtn.setVisibility(View.INVISIBLE)
         redBtn.setVisibility(View.INVISIBLE)
         greenBtn.setVisibility(View.INVISIBLE)
