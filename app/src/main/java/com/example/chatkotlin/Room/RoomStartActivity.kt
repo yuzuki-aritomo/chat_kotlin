@@ -1,5 +1,6 @@
 package com.example.chatkotlin.Room
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -59,33 +60,33 @@ class RoomStartActivity : AppCompatActivity() {
 
         //ゲームスタートボタン
         val game_start : Button = findViewById(R.id.start_from_start)
-        val ref_ready = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
-        var i = 0
-        game_start.setOnClickListener {
-            if(i%2==0){
-                ref_ready.child(user_id).setValue("ready")
-                game_start.text = "OK"
-                i++
-            }else{
-                ref_ready.child(user_id).removeValue()
-                game_start.text = "準備完了"
-                i++
-            }
-
-
-        }
+//        val ref_ready = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
+//        var i = 0
 //        game_start.setOnClickListener {
-//            //val intent = Intent(this, RoomGameActivity::class.java)
-//            val intent = Intent(this, RoomMainActivity::class.java)
-//            intent.putExtra("room_id", room_id)//room_id: room_1
-//            intent.putExtra("user_id", user_id)
-//            intent.putExtra("user_count", user_count)
+//            if(i%2==0){
+//                ref_ready.child(user_id).setValue("ready")
+//                game_start.text = "OK"
+//                i++
+//            }else{
+//                ref_ready.child(user_id).removeValue()
+//                game_start.text = "準備完了"
+//                i++
+//            }
 //
-//            startActivity(intent)
 //
-//            //room_id/IfGameOrNot を変更
-//            val ref_game = FirebaseDatabase.getInstance().getReference("Room/$room_id")
-//            ref_game.child("GameOrNot").setValue("game")
 //        }
+        game_start.setOnClickListener {
+            //val intent = Intent(this, RoomGameActivity::class.java)
+            val intent = Intent(this, RoomMainActivity::class.java)
+            intent.putExtra("room_id", room_id)//room_id: room_1
+            intent.putExtra("user_id", user_id)
+            intent.putExtra("user_count", user_count)
+
+            startActivity(intent)
+
+            //room_id/IfGameOrNot を変更
+            val ref_game = FirebaseDatabase.getInstance().getReference("Room/$room_id")
+            ref_game.child("GameOrNot").setValue("game")
+        }
     }
 }
