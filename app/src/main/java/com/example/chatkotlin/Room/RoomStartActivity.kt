@@ -25,6 +25,9 @@ class RoomStartActivity : AppCompatActivity() {
 
         textView.text = room_id
 
+
+//        ---------------------------------------------------
+
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
         ref.child("user_id").setValue(ref.key)
