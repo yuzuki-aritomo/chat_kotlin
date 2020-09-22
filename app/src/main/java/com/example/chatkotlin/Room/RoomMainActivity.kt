@@ -19,6 +19,10 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_board.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.nio.charset.Charset
 
 
 class RoomMainActivity : AppCompatActivity() {
@@ -32,6 +36,7 @@ class RoomMainActivity : AppCompatActivity() {
     var user_list = arrayOf<String>("aa","aa","aa","aa","aa")
     val hand0= Handler()
 
+    private var questionItem: List<*> = ArrayList<Any?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,6 +190,15 @@ class RoomMainActivity : AppCompatActivity() {
             val ref__ = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
             ref__.child("game_set").setValue(game_set)
         }
+
+
+        readQuestionData()
+        val a = RandomChoice()
+        val b = RandomChoice()
+        Log.d("read", "$a")
+        Log.d("read", "$b")
+
+
     }
 
 
@@ -496,6 +510,55 @@ class RoomMainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+
+
+    fun readQuestionData() {
+        val `is` = resources.openRawResource(R.raw.test_01)
+        val `is2` = resources.openRawResource(R.raw.test_01)
+
+        val reader = BufferedReader(
+            InputStreamReader(
+                `is`,
+                Charset.forName("UTF-8")
+            )
+        )
+
+        val reader2 = BufferedReader(
+            InputStreamReader(
+                `is2`,
+                Charset.forName("UTF-8")
+            )
+        )
+
+        var line = ""
+        try {
+            var a =0
+            while (reader2.readLine() != null ) {
+                line = reader.readLine()
+
+                val abc = line.split(",")
+
+
+                val item = QuestionItem()
+//                item.question_id(tokens[0])
+//                item.setQuestion_item(tokens[1])
+                questionItem+=abc[1]
+
+                Log.d("read", "Just created: ${questionItem[a]}")
+                a++
+            }
+        } catch (e: IOException) {
+            Log.wtf("read", "Error reading data file on line $line", e)
+            e.printStackTrace()
+        }
+        Log.d("read", "$questionItem")
+    }
+    fun RandomChoice(): String{
+        val r = (0..9).shuffled().first()
+        Log.d("read", "Just created: ${questionItem[r]}")
+        return questionItem[r].toString()
     }
 
 }
