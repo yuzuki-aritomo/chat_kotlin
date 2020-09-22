@@ -63,16 +63,16 @@ class RoomMainActivity : AppCompatActivity() {
 //        ref_gameset.child("game_set_max").setValue(game_set_max)
 
         setContentView(R.layout.activity_board)
-
+        layout_construct()
 
         val customSurfaceView = CustomSurfaceView(this, surfaceView_write)
         //初期設定
         //customSurfaceViewにroom_idを渡す
         customSurfaceView.set_room_id(room_id)
         //firebaseに初期値を入れる
-        set_firebase_content()
+        set_firebase_construct()
         val btn: Button = findViewById(R.id.btn_to_another_board_activity)
-        layout_write()
+
         i = 0
         firebase_watch(customSurfaceView)
         surface_write_fun(customSurfaceView)
@@ -103,35 +103,25 @@ class RoomMainActivity : AppCompatActivity() {
 
         //データベースを削除しなければエラー（古い順化から取得するため）
         //代入の前に読み込んでしまうため遅らせる
-        hand0.postDelayed(Runnable {
-//            Log.d("user_list",user_list[0])
-//            Log.d("user_list",user_list[1])
-//            Log.d("user_list","user_id:$user_id")
-//            Log.d("user_list","user_count:$user_count")
-//            Log.d("user_list",user_list[game_set % user_count])
-            if(user_id == user_list[game_set % user_count]){
-                //writeの関数
-                //お題の選定とfirebaseに保存
-
-                //writeのレイアウト
-                i = 2
-                layout_write()
-                surface_write_fun(customSurfaceView)
-            }else{
-                //watchの関数
-                //watchのレイアウト
-                i = 1
-                layout_watch()
-                surface_watch_fun(customSurfaceView)
-            }
-            game_set++
-        },500)
+//        hand0.postDelayed(Runnable {
+//            if(user_id == user_list[game_set % user_count]){
+//                //writeの関数
+//                //お題の選定とfirebaseに保存
+//
+//                //writeのレイアウト
+//                i = 2
+//                layout_write("お題")
+//                surface_write_fun(customSurfaceView)
+//            }else{
+//                //watchの関数
+//                //watchのレイアウト
+//                i = 1
+//                layout_watch()
+//                surface_watch_fun(customSurfaceView)
+//            }
+//            game_set++
+//        },500)
         //game_set=1
-
-
-//        Log.d("user_list", (game_set%user_count).toString())
-//        Log.d("user_list",user_list[game_set % user_count].toString())
-
 
 
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 2回目以降
@@ -151,9 +141,11 @@ class RoomMainActivity : AppCompatActivity() {
                 }
                 //game_set % user_count の値の人が書く人
                 if(user_id == user_list[game_set % user_count]){
+                    //お題の選定とfirebaseに保存
+
                     //writeの関数
                     i = 2
-                    layout_write()
+                    layout_write("お題")
                     surface_write_fun(customSurfaceView)
                 }else{
                     //watchの関数
@@ -250,23 +242,50 @@ class RoomMainActivity : AppCompatActivity() {
         aa++
     }
 
-    fun layout_write(){
-        btn_board_reset.setVisibility(View.VISIBLE)
-        room_btn_change_color.setVisibility(View.VISIBLE)
-        whiteBtn.setVisibility(View.VISIBLE)
-
-        room_message_btn.setVisibility(View.INVISIBLE)
-        room_message_text.setVisibility(View.INVISIBLE)
-        blackBtn.setVisibility(View.INVISIBLE)
-        redBtn.setVisibility(View.INVISIBLE)
-        greenBtn.setVisibility(View.INVISIBLE)
-
+    fun layout_construct(){
+        //answer message
         room_answer_text_1.setVisibility(View.GONE)
         room_answer_text_2.setVisibility(View.GONE)
         room_answer_text_3.setVisibility(View.GONE)
         textview_announce_write.setVisibility(View.GONE)
+        textview_announce_watch.setVisibility(View.GONE)
+        textView_odai.setVisibility(View.GONE)
+
+        blackBtn.setVisibility(View.INVISIBLE)
+        redBtn.setVisibility(View.INVISIBLE)
+        greenBtn.setVisibility(View.INVISIBLE)
+    }
+    fun layout_write(view_odai: String){
+        //announce
+        textview_announce_write.setVisibility(View.VISIBLE)
+        hand0.postDelayed(Runnable {
+            textview_announce_write.setVisibility(View.INVISIBLE)
+        },3000)
+        textView_odai.text = "お題は「$view_odai」です"
+        textView_odai.setVisibility(View.VISIBLE)
+
+        //write button
+        btn_board_reset.setVisibility(View.VISIBLE)
+        room_btn_change_color.setVisibility(View.VISIBLE)
+        whiteBtn.setVisibility(View.VISIBLE)
+        blackBtn.setVisibility(View.INVISIBLE)
+        redBtn.setVisibility(View.INVISIBLE)
+        greenBtn.setVisibility(View.INVISIBLE)
+
+        //watch button
+        room_message_btn.setVisibility(View.INVISIBLE)
+        room_message_text.setVisibility(View.INVISIBLE)
     }
     fun layout_watch(){
+        //announce
+        textview_announce_watch.setVisibility(View.VISIBLE)
+        hand0.postDelayed(Runnable {
+            textview_announce_watch.setVisibility(View.INVISIBLE)
+        },3000)
+
+        textView_odai.setVisibility(View.GONE)
+
+        //write button
         btn_board_reset.setVisibility(View.INVISIBLE)
         room_btn_change_color.setVisibility(View.INVISIBLE)
         whiteBtn.setVisibility(View.INVISIBLE)
@@ -274,6 +293,7 @@ class RoomMainActivity : AppCompatActivity() {
         redBtn.setVisibility(View.INVISIBLE)
         greenBtn.setVisibility(View.INVISIBLE)
 
+        //watch button
         room_message_btn.setVisibility(View.VISIBLE)
         room_message_text.setVisibility(View.VISIBLE)
     }
@@ -323,7 +343,7 @@ class RoomMainActivity : AppCompatActivity() {
 
     }
     //firebaseに初期値を代入
-    fun set_firebase_content(){
+    fun set_firebase_construct(){
         val pass_down = FirebaseDatabase.getInstance().getReference("Room/$room_id")
         pass_down.child("draw/draw_up/x").setValue("0")
         pass_down.child("draw/draw_up/y").setValue("0")
@@ -336,6 +356,7 @@ class RoomMainActivity : AppCompatActivity() {
         pass_down.child("game/answer").setValue("aaa")
         pass_down.child("Message/text").setValue("aaa")
         pass_down.child("game/from_user_id").setValue("bbb")
+        pass_down.child("game/game_set").setValue("1")
     }
 
     //色変更ボタンを閉じる
