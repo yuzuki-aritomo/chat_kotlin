@@ -8,14 +8,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.chatkotlin.Board.Button_board
 import com.example.chatkotlin.Board.CustomSurfaceView
 import com.example.chatkotlin.Board.Draw_data
-import com.example.chatkotlin.Message.ChatlogActivity
-import com.example.chatkotlin.Message.NewMassageActivity
-import com.example.chatkotlin.Message.UserItem
 import com.example.chatkotlin.R
-import com.example.chatkotlin.User.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,7 +19,6 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_board.*
-import kotlinx.android.synthetic.main.activity_new_massage.*
 
 
 class RoomMainActivity : AppCompatActivity() {
@@ -504,6 +498,8 @@ class RoomMainActivity : AppCompatActivity() {
 
     }
 
-
-
 }
+data class Button_board(
+    var reset: String? = "a",
+    var color: String? = "black",
+)
