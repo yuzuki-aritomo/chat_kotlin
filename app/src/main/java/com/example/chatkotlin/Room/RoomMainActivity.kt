@@ -118,7 +118,7 @@ class RoomMainActivity : AppCompatActivity() {
         //game_set=1
 
 
-        //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 2回目以降
+        //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
         val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
         ref_set.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
@@ -132,6 +132,7 @@ class RoomMainActivity : AppCompatActivity() {
                     //ゲームの終了画面に移行
                     Log.d("test","end game")
                     //Firebaseの初期化
+                    FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
                 }
                 //game_set % user_count の値の人が書く人
                 if(user_id == user_list[game_set % user_count]){
