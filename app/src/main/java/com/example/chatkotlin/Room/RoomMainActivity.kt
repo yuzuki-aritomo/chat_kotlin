@@ -142,10 +142,11 @@ class RoomMainActivity : AppCompatActivity() {
                 //game_set % user_count の値の人が書く人
                 if(user_id == user_list[game_set % user_count]){
                     //お題の選定とfirebaseに保存
+                    val a = RandomChoice()
 
                     //writeの関数
                     i = 2
-                    layout_write("お題")
+                    layout_write(a)
                     surface_write_fun(customSurfaceView)
                 }else{
                     //watchの関数
