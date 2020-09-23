@@ -23,6 +23,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.Charset
+import kotlin.concurrent.thread
 
 
 class RoomMainActivity : AppCompatActivity() {
@@ -48,7 +49,10 @@ class RoomMainActivity : AppCompatActivity() {
 
 //        room_id = "room_1"
 //        user_id = "-MHUSFkLXeAht73QVyuz"
-        user_count = 5
+//        user_count = 5
+
+        //csvファイルの読み込み
+        readQuestionData()
 
         //gameのセット数
         when(user_count){
@@ -96,8 +100,6 @@ class RoomMainActivity : AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {
             }
         })
-
-
         game_set = 1
 
         //データベースを削除しなければエラー（古い順化から取得するため）
@@ -123,38 +125,53 @@ class RoomMainActivity : AppCompatActivity() {
         //game_set=1
 
 
-        //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 2回目以降
+        //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
+        var game_set_num = 0
         val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
         ref_set.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("user_list",user_list[0])
-                Log.d("user_list",user_list[1])
-                Log.d("user_list","user_id:$user_id")
-                Log.d("user_list","user_count:$user_count")
-                Log.d("user_list",user_list[game_set % user_count])
-                //gameが終了するかどうか
-                if(game_set+1 == game_set_max){
-                    //ゲームの終了画面に移行
-                    Log.d("test","end game")
-                    //Firebaseの初期化
-                }
-                //game_set % user_count の値の人が書く人
-                if(user_id == user_list[game_set % user_count]){
-                    //お題の選定とfirebaseに保存
-
-                    //writeの関数
-                    i = 2
-                    layout_write("お題")
-                    surface_write_fun(customSurfaceView)
+                //ゲームスタートと答えの表示
+                if(game_set_num==0){
+                    //スタートの表示
+                    textView_answer_result.text = "ゲームスタート"
+                    textView_answer_result.setVisibility(View.VISIBLE)
                 }else{
-                    //watchの関数
-                    //watchのレイアウト
-                    i = 1
-                    layout_watch()
-                    surface_watch_fun(customSurfaceView)
+                    //答えの表示
+                    textView_answer_result.text = "答え\n「$answer」"
+                    textView_answer_result.setVisibility(View.VISIBLE)
                 }
-                //game_setが終われば
-                game_set++
+                game_set_num++
+                hand0.postDelayed(Runnable {
+                    textView_answer_result.setVisibility(View.GONE)
+                    customSurfaceView.reset()
+
+                    //gameが終了するかどうか
+                    if(game_set+1 == game_set_max){
+                        //ゲームの終了画面に移行
+                        Log.d("test","end game")
+                        //Firebaseの初期化
+                        FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
+                    }
+                    //game_set % user_count の値の人が書く人
+                    if(user_id == user_list[game_set % user_count]){
+                        //お題の選定とfirebaseに保存
+                        val a = RandomChoice()
+                        FirebaseDatabase.getInstance().getReference("Room/$room_id/game/answer").setValue(a)
+                        //writeの関数
+                        i = 2
+                        layout_write(a)
+                        surface_write_fun(customSurfaceView)
+                    }else{
+                        //watchの関数
+                        //watchのレイアウト
+                        i = 1
+                        layout_watch()
+                        surface_watch_fun(customSurfaceView)
+                    }
+                    //game_setが終われば
+                    game_set++
+
+                },4000)
             }
             override fun onCancelled(p0: DatabaseError) {
 
@@ -162,9 +179,6 @@ class RoomMainActivity : AppCompatActivity() {
         })
 
         //答えの表示
-
-
-
 
 
 
@@ -190,15 +204,6 @@ class RoomMainActivity : AppCompatActivity() {
             val ref__ = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
             ref__.child("game_set").setValue(game_set)
         }
-
-
-        readQuestionData()
-        val a = RandomChoice()
-        val b = RandomChoice()
-        Log.d("read", "$a")
-        Log.d("read", "$b")
-
-
     }
 
 
@@ -210,8 +215,9 @@ class RoomMainActivity : AppCompatActivity() {
                 val text: String = room_message_text.text.toString()
                 if(text == answer){
                     //firebaseに保存
-                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
-                    refe.setValue(game_set)
+                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
+                    refe.child("game_set").setValue(game_set)
+                    refe.child("answer").setValue(text)
                 }
                 val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
                 ref.child("text").setValue(text)
@@ -258,7 +264,12 @@ class RoomMainActivity : AppCompatActivity() {
         textview_announce_write.setVisibility(View.GONE)
         textview_announce_watch.setVisibility(View.GONE)
         textView_odai.setVisibility(View.GONE)
+        textView_answer_result.setVisibility(View.GONE)
 
+        //write button
+        btn_board_reset.setVisibility(View.INVISIBLE)
+        room_btn_change_color.setVisibility(View.INVISIBLE)
+        whiteBtn.setVisibility(View.INVISIBLE)
         blackBtn.setVisibility(View.INVISIBLE)
         redBtn.setVisibility(View.INVISIBLE)
         greenBtn.setVisibility(View.INVISIBLE)
