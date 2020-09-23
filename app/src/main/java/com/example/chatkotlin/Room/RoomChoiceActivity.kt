@@ -36,6 +36,14 @@ class RoomChoiceActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //Room3btn
+        val room3: Button = findViewById(R.id.room_start_3)
+        room3.setOnClickListener {
+            val intent = Intent(this, RoomStartActivity::class.java)
+            intent.putExtra("room_id", "room_3")
+            startActivity(intent)
+        }
+
     }
     //firebaseからユーザー数の確認する関数(引数：room_id  戻り値：bool)
     fun user_count(room_id: String){
