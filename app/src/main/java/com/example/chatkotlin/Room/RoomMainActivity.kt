@@ -7,6 +7,8 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatkotlin.Board.CustomSurfaceView
 import com.example.chatkotlin.Board.Draw_data
@@ -19,6 +21,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_board.*
+import kotlinx.android.synthetic.main.activity_room_choice.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -31,10 +34,12 @@ class RoomMainActivity : AppCompatActivity() {
     var room_id: String= "room_extra"
     var user_id: String= "room_extra"
     var user_count: Int = 0
+    var user_score: Int = 0
     var game_set: Int = 1
     var game_set_max: Int = 0
     var answer = "aaa" //お題の答え
     var user_list = arrayOf<String>("aa","aa","aa","aa","aa")
+    var user_name_list = arrayOf<String>("ゲスト","ゲスト","ゲスト","ゲスト","ゲスト")
     val hand0= Handler()
 
     private var questionItem: List<*> = ArrayList<Any?>()
@@ -46,10 +51,6 @@ class RoomMainActivity : AppCompatActivity() {
         room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
         user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
         user_count = intent.getStringExtra("user_count").toInt() //room_id: room_1
-
-//        room_id = "room_1"
-//        user_id = "-MHUSFkLXeAht73QVyuz"
-//        user_count = 5
 
         //お題のcsvファイルの読み込み
         readQuestionData()
@@ -79,7 +80,6 @@ class RoomMainActivity : AppCompatActivity() {
 
 
         //user情報を排列に代入
-//        user_list = arrayOf(user_count)//user_idを排列に入れている
         var abc = 0
         //user情報を排列に代入
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
@@ -89,15 +89,26 @@ class RoomMainActivity : AppCompatActivity() {
                     if(abc<user_count){
                         Log.d("NewMassage", it.toString())
                         val user_id_num = it.child("user_id").getValue()
+                        val user_name = it.child("user_name").getValue()
+                        user_name_list[abc] = user_name.toString()
                         user_list[abc] = user_id_num.toString()
                         abc++
                     }
+                }
+                val layout_name = findViewById<LinearLayout>(R.id.linearLayout_name)
+                var i = 0
+                for (name in user_name_list){
+                    val textView_name: TextView = layout_name.getChildAt(i) as TextView
+                    textView_name.text = name
+                    i++
                 }
             }
             override fun onCancelled(p0: DatabaseError) {
             }
         })
         game_set = 1
+
+
 
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
         var game_set_num = 0
@@ -124,8 +135,9 @@ class RoomMainActivity : AppCompatActivity() {
                         //ゲームの終了画面に移行
                         Log.d("test","end game")
                         val intent = Intent(applicationContext, RoomResultActivity::class.java)
+                        intent.putExtra("room_id", room_id)//room_id: room_1
+                        intent.putExtra("user_id", user_id)
                         startActivity(intent)
-                        Thread.sleep(3000)
                     }
                     //game_set % user_count の値の人が書く人
                     if(user_id == user_list[game_set % user_count]){
@@ -152,29 +164,9 @@ class RoomMainActivity : AppCompatActivity() {
             }
         })
 
-        //答えの表示
-
-
-
         //それぞれのviewでの切り替え
         btn.setOnClickListener{
-//            if(i%2==1){
-//                i = i + 1
-////                layout_write()
-////                surface_write_fun(customSurfaceView)
-//
-//            }else if(i%2==0){
-//                i = i + 1
-//                //surfaceviewの無効化
-////                customSurfaceView.setOnTouchListener { v, event ->
-////                    Log.d("event", "not write")
-////                    customSurfaceView.onTouch_watch(event)
-////                }
-////                layout_watch()
-////                surface_watch_fun(customSurfaceView)
-//            }
             Log.d("user_",user_list[game_set % user_count])
-//            game_set++
             val ref__ = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
             ref__.child("game_set").setValue(game_set)
         }
@@ -189,9 +181,11 @@ class RoomMainActivity : AppCompatActivity() {
                 val text: String = room_message_text.text.toString()
                 if(text == answer){
                     //firebaseに保存
-                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
-                    refe.child("game_set").setValue(game_set)
-                    refe.child("answer").setValue(text)
+                    user_score += 30
+                    val refe = FirebaseDatabase.getInstance().getReference("Room/$room_id")
+                    refe.child("game/game_set").setValue(game_set)
+                    refe.child("game/answer").setValue(text)
+                    refe.child("user/$user_id/score").setValue(user_score)
                 }
                 val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message")
                 ref.child("text").setValue(text)
