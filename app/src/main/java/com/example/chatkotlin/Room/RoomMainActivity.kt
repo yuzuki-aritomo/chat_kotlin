@@ -51,7 +51,7 @@ class RoomMainActivity : AppCompatActivity() {
 //        user_id = "-MHUSFkLXeAht73QVyuz"
 //        user_count = 5
 
-        //csvファイルの読み込み
+        //お題のcsvファイルの読み込み
         readQuestionData()
 
         //gameのセット数
