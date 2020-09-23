@@ -20,20 +20,13 @@ class RoomResultActivity : AppCompatActivity() {
         var hand0 = Handler()
 
         //room_idの設定
-//        val room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
-//        val user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
+        val room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
+        val user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
 
-        val room_id = "room_1"
-        val user_id = "-MHungwKH0BZGzbIFxB0"
-
-        val ref_test = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
-
-        Log.d("mmm",ref_test.toString())
-
+        //順位の表示
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").orderByChild("score")
-        ref.addValueEventListener(object: ValueEventListener {
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("mmm",p0.value.toString())
                 val layout_name = findViewById<LinearLayout>(R.id.line_layout_all)
                 var i: Int = p0.childrenCount.toInt() - 1
                 p0.children.forEach {
