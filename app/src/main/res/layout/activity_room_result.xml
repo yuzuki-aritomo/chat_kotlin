@@ -12,11 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="ゲーム結果"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/line_layout_all"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -30,15 +32,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/result_image_1"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:layout_gravity="bottom"
                 android:src="@drawable/ranking1" />
 
@@ -49,7 +50,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="10sp"
-                android:text="0"
+                android:text="--"
                 android:textSize="35sp" />
 
             <TextView
@@ -58,7 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:gravity="bottom"
-                android:text="ゆずき"
+                android:text="****"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -66,15 +67,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/result_image_2"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:layout_gravity="bottom"
                 android:src="@drawable/ranking2" />
 
@@ -85,7 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="10sp"
-                android:text="0"
+                android:text="--"
                 android:textSize="35sp" />
 
             <TextView
@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:gravity="bottom"
-                android:text="ゆずき"
+                android:text="****"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -102,15 +102,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/result_image_3"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/ranking3" />
 
             <TextView
@@ -120,7 +119,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="10sp"
-                android:text="0"
+                android:text="--"
                 android:textSize="35sp" />
 
             <TextView
@@ -129,7 +128,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:gravity="bottom"
-                android:text="ゆずき"
+                android:text="****"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -137,15 +136,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/result_image_4"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/ranking4" />
 
             <TextView
@@ -155,7 +153,7 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="10sp"
-                android:text="0"
+                android:text="--"
                 android:textSize="35sp" />
 
             <TextView
@@ -164,7 +162,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="7"
                 android:gravity="bottom"
-                android:text="ゆずき"
+                android:text="****"
                 android:textSize="30sp" />
 
         </LinearLayout>
@@ -172,14 +170,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/result_image_5"
-                android:layout_width="40dp"
+                android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:layout_weight="1"
                 android:src="@drawable/ranking5" />
 
             <TextView
@@ -189,17 +186,17 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:paddingLeft="10sp"
-                android:text="0"
-                android:textSize="35sp"/>
+                android:text="--"
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/result_name_5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
-                android:text="ゆずき"
-                android:textSize="30sp"
-                android:gravity="bottom"/>
+                android:gravity="bottom"
+                android:text="****"
+                android:textSize="30sp" />
 
         </LinearLayout>
 
