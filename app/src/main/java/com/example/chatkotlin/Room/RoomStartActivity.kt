@@ -23,10 +23,7 @@ class RoomStartActivity : AppCompatActivity() {
 
         // 初期のroom情報
         val room_id = intent.getStringExtra("room_id")
-        var user_id = "user_id"
 
-
-        textView.text = room_id
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
@@ -34,7 +31,7 @@ class RoomStartActivity : AppCompatActivity() {
         Log.d("key",ref.key)
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue("0")
-        user_id = ref.key.toString()
+        val user_id = ref.key.toString()
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
@@ -91,9 +88,12 @@ class RoomStartActivity : AppCompatActivity() {
         }
     }
     fun startGame(room_id: String, user_id: String, user_count: String){
+        val user_name = editText_user_name.text.toString()
+        FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_name").setValue(user_name)
         val intent = Intent(this, RoomMainActivity::class.java)
         intent.putExtra("room_id", room_id)//room_id: room_1
         intent.putExtra("user_id", user_id)
+        intent.putExtra("user_name", user_name)
         intent.putExtra("user_count", user_count)
         startActivity(intent)
     }
