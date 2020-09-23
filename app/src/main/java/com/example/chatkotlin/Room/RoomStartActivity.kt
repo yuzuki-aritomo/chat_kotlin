@@ -27,11 +27,12 @@ class RoomStartActivity : AppCompatActivity() {
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
-        ref.child("user_id").setValue(ref.key)
-        Log.d("key",ref.key)
-        ref.child("draw_or_watch").setValue("watch")
-        ref.child("score").setValue("0")
         val user_id = ref.key.toString()
+        ref.child("user_id").setValue(ref.key)
+        ref.child("draw_or_watch").setValue("watch")
+        ref.child("score").setValue(0)
+        ref.child("user_name").setValue("ゲスト")
+
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
@@ -39,7 +40,6 @@ class RoomStartActivity : AppCompatActivity() {
         ref_user.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 user_count = snapshot.childrenCount.toString()
-                val ready_count = snapshot.child("ready").childrenCount.toString()
                 text_user_count.text = user_count
             }
             override fun onCancelled(error: DatabaseError) {
@@ -51,10 +51,13 @@ class RoomStartActivity : AppCompatActivity() {
         val ref_ready_count = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
         ref_ready_count.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                user_count = snapshot.childrenCount.toString()
-                val ready_count = snapshot.childrenCount.toString()
-                if(user_count.toInt() == ready_count.toInt() && user_count.toInt()>1){
-                    startGame(room_id,user_id,user_count)
+                val ready_count = snapshot.childrenCount.toInt()
+                if(user_count.toInt() == snapshot.childrenCount.toInt() ){
+                    Log.d("start",user_count)
+                    Log.d("start",ready_count.toString())
+                    if(user_count.toInt()>1){
+                        startGame(room_id,user_id,user_count)
+                    }
                 }
             }
             override fun onCancelled(error: DatabaseError) {

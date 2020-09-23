@@ -303,6 +303,6 @@ data class pathInfo(
 )
 
 data class Draw_data(
-    var x: String? = "",
-    var y: String? = "",
+    var x: String? = "0",
+    var y: String? = "0",
 )
