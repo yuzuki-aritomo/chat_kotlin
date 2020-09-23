@@ -534,7 +534,7 @@ class RoomMainActivity : AppCompatActivity() {
 
         var line = ""
         try {
-            var a =0
+            var a = 0
             while (reader2.readLine() != null ) {
                 line = reader.readLine()
 
@@ -554,11 +554,19 @@ class RoomMainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         Log.d("read", "$questionItem")
+
     }
     fun RandomChoice(): String{
-        val r = (0..9).shuffled().first()
+        val data_counter = questionItem.size -1
+        val r = (0..data_counter).random()
+//        val r1 = (0..data_counter).shuffled().second()
+
         Log.d("read", "Just created: ${questionItem[r]}")
+
+
+        Log.d("read", "$data_counter")
         return questionItem[r].toString()
+
     }
 
 }
