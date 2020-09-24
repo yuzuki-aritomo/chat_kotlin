@@ -73,6 +73,7 @@ class RoomStartActivity : AppCompatActivity() {
         ref_ready_count.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val ready_count = snapshot.childrenCount.toInt()
+                text_ready_count.text = ready_count.toString()
                 if(user_count.toInt() == snapshot.childrenCount.toInt() ){
                     Log.d("start",user_count)
                     Log.d("start",ready_count.toString())
