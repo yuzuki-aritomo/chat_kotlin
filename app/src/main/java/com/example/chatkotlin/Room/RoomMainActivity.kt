@@ -7,6 +7,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_board.*
+import kotlinx.android.synthetic.main.activity_room_start.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -80,6 +82,8 @@ class RoomMainActivity : AppCompatActivity() {
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
+                val layout_name = findViewById<LinearLayout>(R.id.linearLayout_name)
+                val layout_image = findViewById<LinearLayout>(R.id.linearLayout_image)
                 p0.children.forEach {
                     if (abc < user_count) {
                         Log.d("NewMassage", it.toString())
@@ -87,16 +91,29 @@ class RoomMainActivity : AppCompatActivity() {
                         val user_name = it.child("user_name").getValue()
                         user_name_list[abc] = user_name.toString()
                         user_list[abc] = user_id_num.toString()
+
+                        val textView_name: TextView = layout_name.getChildAt(abc) as TextView
+                        textView_name.text = user_name.toString()
+
+                        val image_view: ImageView = layout_image.getChildAt(abc) as ImageView
+                        when(abc+1){
+                            1 -> image_view.setImageResource(R.drawable.user_image_1)
+                            2 -> image_view.setImageResource(R.drawable.user_image_2)
+                            3 -> image_view.setImageResource(R.drawable.user_image_3)
+                            4 -> image_view.setImageResource(R.drawable.user_image_4)
+                            5 -> image_view.setImageResource(R.drawable.user_image_5)
+                        }
+                        image_view.setVisibility(View.VISIBLE)
                         abc++
                     }
                 }
-                val layout_name = findViewById<LinearLayout>(R.id.linearLayout_name)
-                var i = 0
-                for (name in user_name_list) {
-                    val textView_name: TextView = layout_name.getChildAt(i) as TextView
-                    textView_name.text = name
-                    i++
-                }
+
+//                var i = 0
+//                for (name in user_name_list) {
+//                    val textView_name: TextView = layout_name.getChildAt(i) as TextView
+//                    textView_name.text = name
+//                    i++
+//                }
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -239,6 +256,11 @@ class RoomMainActivity : AppCompatActivity() {
         textview_announce_watch.setVisibility(View.GONE)
         textView_odai.setVisibility(View.GONE)
         textView_answer_result.setVisibility(View.GONE)
+        room_user_image_1.setVisibility(View.INVISIBLE)
+        room_user_image_2.setVisibility(View.INVISIBLE)
+        room_user_image_3.setVisibility(View.INVISIBLE)
+        room_user_image_4.setVisibility(View.INVISIBLE)
+        room_user_image_5.setVisibility(View.INVISIBLE)
 
         //write button
         btn_board_reset.setVisibility(View.INVISIBLE)
