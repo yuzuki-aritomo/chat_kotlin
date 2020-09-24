@@ -524,7 +524,7 @@ class RoomMainActivity : AppCompatActivity() {
     }
 
 
-
+    //お題生成（CSVファイル読み込み）
     fun readQuestionData() {
         val `is` = resources.openRawResource(R.raw.test_01)
         val `is2` = resources.openRawResource(R.raw.test_01)
@@ -567,6 +567,7 @@ class RoomMainActivity : AppCompatActivity() {
         Log.d("read", "$questionItem")
 
     }
+    //お題ランダム取り出し
     fun RandomChoice(): String{
         val data_counter = questionItem.size -1
         val r = (0..data_counter).random()
