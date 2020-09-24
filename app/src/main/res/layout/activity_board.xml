@@ -14,23 +14,27 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_board_reset"
+        app:layout_constraintBottom_toTopOf="@+id/room_message_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_name"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_name" />
 
     <EditText
         android:id="@+id/room_message_text"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round_edit_message"
         android:hint="ひらがなでお題を書いてください"
         android:inputType="text"
+        android:paddingLeft="20dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/room_message_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView_write" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/blackBtn"
@@ -40,6 +44,7 @@
         android:background="@drawable/frame_style_black"
         android:text="くろ"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/room_btn_change_color"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -82,7 +87,13 @@
         android:id="@+id/room_message_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round_submit"
         android:text="送信"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -90,29 +101,37 @@
         android:id="@+id/whiteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="消しゴム"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/room_btn_change_color" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/room_btn_change_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="色変更"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/room_message_text" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_board_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="全消し"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/whiteBtn" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/room_answer_text_1"
