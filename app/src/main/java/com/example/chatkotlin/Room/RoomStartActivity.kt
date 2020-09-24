@@ -56,7 +56,7 @@ class RoomStartActivity : AppCompatActivity() {
                     Log.d("start",user_count)
                     Log.d("start",ready_count.toString())
                     if(user_count.toInt()>1){
-                        startGame(room_id,user_id,user_count)
+                        startGame(room_id.toString(),user_id,user_count)
                     }
                 }
             }
@@ -90,12 +90,13 @@ class RoomStartActivity : AppCompatActivity() {
             }
         }
     }
-    fun startGame(room_id: String, user_id: String, user_count: String){
+    fun startGame(room_id: String, user_id_pass: String, user_count: String){
         val user_name = editText_user_name.text.toString()
-        FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_name").setValue(user_name)
+        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id_pass")
+        ref.child("user_name").setValue(user_name)
         val intent = Intent(this, RoomMainActivity::class.java)
         intent.putExtra("room_id", room_id)//room_id: room_1
-        intent.putExtra("user_id", user_id)
+        intent.putExtra("user_id", user_id_pass)
         intent.putExtra("user_name", user_name)
         intent.putExtra("user_count", user_count)
         startActivity(intent)

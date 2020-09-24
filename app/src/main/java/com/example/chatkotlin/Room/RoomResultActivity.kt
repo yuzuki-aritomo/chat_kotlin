@@ -1,16 +1,19 @@
 package com.example.chatkotlin.Room
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.chatkotlin.Default.StartpageActivity
 import com.example.chatkotlin.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_room_result.*
 
 class RoomResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,20 +23,13 @@ class RoomResultActivity : AppCompatActivity() {
         var hand0 = Handler()
 
         //room_idの設定
-//        val room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
-//        val user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
+        val room_id = intent.getStringExtra("room_id").toString()//room_id: room_1
+        val user_id = intent.getStringExtra("user_id").toString() //room_id: room_1
 
-        val room_id = "room_1"
-        val user_id = "-MHungwKH0BZGzbIFxB0"
-
-        val ref_test = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
-
-        Log.d("mmm",ref_test.toString())
-
+        //順位の表示
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").orderByChild("score")
-        ref.addValueEventListener(object: ValueEventListener {
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                Log.d("mmm",p0.value.toString())
                 val layout_name = findViewById<LinearLayout>(R.id.line_layout_all)
                 var i: Int = p0.childrenCount.toInt() - 1
                 p0.children.forEach {
@@ -59,6 +55,11 @@ class RoomResultActivity : AppCompatActivity() {
         hand0.postDelayed(Runnable {
             FirebaseDatabase.getInstance().getReference("Room/$room_id").removeValue()
         },4000)
+
+        button_result_to_start.setOnClickListener {
+            val intent = Intent(this,StartpageActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }

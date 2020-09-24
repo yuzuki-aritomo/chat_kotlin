@@ -175,7 +175,7 @@
         <ImageView
             android:id="@+id/room_user_image_3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -215,28 +215,28 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_4"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:text="" />
 
     </LinearLayout>
 
