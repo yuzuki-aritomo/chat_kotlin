@@ -17,13 +17,14 @@ class RoomStartActivity : AppCompatActivity() {
 
     var user_count = "0"
     var user_id: String = ""
+    var room_id = "room_1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_start)
 
         // 初期のroom情報
-        val room_id = intent.getStringExtra("room_id")
+        room_id = intent.getStringExtra("room_id")
 
 
         //user_id の登録
@@ -68,7 +69,6 @@ class RoomStartActivity : AppCompatActivity() {
             }
         })
 
-
         //退出ボタン
         val btn_finish: Button = findViewById(R.id.exit_from_start)
         btn_finish.setOnClickListener {
@@ -92,6 +92,14 @@ class RoomStartActivity : AppCompatActivity() {
                 i++
             }
         }
+    }
+    //戻るボタンでユーザーの情報を削除
+    override fun onBackPressed() {
+        //user情報の削除
+        val ref_delete = FirebaseDatabase.getInstance().getReference("Room/$room_id")
+        ref_delete.child("user/$user_id").removeValue()
+        ref_delete.child("ready$user_id").removeValue()
+        finish()
     }
     fun startGame(room_id: String,user_count: String){
         Log.d("vvv",user_id)
