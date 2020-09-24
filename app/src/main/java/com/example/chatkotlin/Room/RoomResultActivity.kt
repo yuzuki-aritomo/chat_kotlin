@@ -1,16 +1,19 @@
 package com.example.chatkotlin.Room
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.chatkotlin.Default.StartpageActivity
 import com.example.chatkotlin.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_room_result.*
 
 class RoomResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +55,11 @@ class RoomResultActivity : AppCompatActivity() {
         hand0.postDelayed(Runnable {
             FirebaseDatabase.getInstance().getReference("Room/$room_id").removeValue()
         },4000)
+
+        button_result_to_start.setOnClickListener {
+            val intent = Intent(this,StartpageActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 }
