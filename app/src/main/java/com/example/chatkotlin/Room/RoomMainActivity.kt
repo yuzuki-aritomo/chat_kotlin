@@ -17,16 +17,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_board.*
-import kotlinx.android.synthetic.main.activity_room_choice.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.charset.Charset
-import kotlin.concurrent.thread
 
 
 class RoomMainActivity : AppCompatActivity() {
@@ -38,8 +33,8 @@ class RoomMainActivity : AppCompatActivity() {
     var game_set: Int = 1
     var game_set_max: Int = 0
     var answer = "aaa" //お題の答え
-    var user_list = arrayOf<String>("aa","aa","aa","aa","aa")
-    var user_name_list = arrayOf<String>("ゲスト","ゲスト","ゲスト","ゲスト","ゲスト")
+    var user_list = arrayOf<String>("aa", "aa", "aa", "aa", "aa")
+    var user_name_list = arrayOf<String>("ゲスト", "ゲスト", "ゲスト", "ゲスト", "ゲスト")
     val hand0= Handler()
 
     private var questionItem: List<*> = ArrayList<Any?>()
@@ -83,10 +78,10 @@ class RoomMainActivity : AppCompatActivity() {
         var abc = 0
         //user情報を排列に代入
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
-                    if(abc<user_count){
+                    if (abc < user_count) {
                         Log.d("NewMassage", it.toString())
                         val user_id_num = it.child("user_id").getValue()
                         val user_name = it.child("user_name").getValue()
@@ -97,12 +92,13 @@ class RoomMainActivity : AppCompatActivity() {
                 }
                 val layout_name = findViewById<LinearLayout>(R.id.linearLayout_name)
                 var i = 0
-                for (name in user_name_list){
+                for (name in user_name_list) {
                     val textView_name: TextView = layout_name.getChildAt(i) as TextView
                     textView_name.text = name
                     i++
                 }
             }
+
             override fun onCancelled(p0: DatabaseError) {
             }
         })
@@ -113,17 +109,17 @@ class RoomMainActivity : AppCompatActivity() {
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
         var game_set_num = 0
         val ref_set = FirebaseDatabase.getInstance().getReference("Room/$room_id/game/game_set")
-        ref_set.addValueEventListener(object: ValueEventListener {
+        ref_set.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 //ゲームスタートと答えの表示
-                if(game_set_num==0){
+                if (game_set_num == 0) {
                     //スタートの表示
                     textView_answer_result.text = "ゲームスタート"
                     textView_answer_result.setVisibility(View.VISIBLE)
-                }else{
+                } else {
                     //答えの表示
                     textView_answer_result.text = "答え\n「$answer」"
                     textView_answer_result.setVisibility(View.VISIBLE)
@@ -134,24 +130,27 @@ class RoomMainActivity : AppCompatActivity() {
                     customSurfaceView.reset()
 
                     //gameが終了するかどうか
-                    if(game_set-1 == game_set_max){
+                    if (game_set - 1 == game_set_max) {
                         //ゲームの終了画面に移行
-                        Log.d("test","end game")
+                        Log.d("test", "end game")
                         val intent = Intent(applicationContext, RoomResultActivity::class.java)
                         intent.putExtra("room_id", room_id)//room_id: room_1
                         intent.putExtra("user_id", user_id)
                         startActivity(intent)
                     }
                     //game_set % user_count の値の人が書く人
-                    if(user_id == user_list[game_set % user_count]){
+                    if (user_id == user_list[game_set % user_count]) {
                         //お題の選定とfirebaseに保存
                         val a = RandomChoice()
-                        FirebaseDatabase.getInstance().getReference("Room/$room_id/game/answer").setValue(a)
+                        FirebaseDatabase.getInstance().getReference("Room/$room_id/game/answer")
+                            .setValue(
+                                a
+                            )
                         //writeの関数
                         i = 2
                         layout_write(a)
                         surface_write_fun(customSurfaceView)
-                    }else{
+                    } else {
                         //watchの関数
                         //watchのレイアウト
                         i = 1
@@ -160,8 +159,9 @@ class RoomMainActivity : AppCompatActivity() {
                     }
                     //game_setが終われば
                     game_set++
-                },3000)
+                }, 3000)
             }
+
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -169,12 +169,15 @@ class RoomMainActivity : AppCompatActivity() {
 
         //それぞれのviewでの切り替え
         btn.setOnClickListener{
-            Log.d("user_",user_list[game_set % user_count])
+            Log.d("user_", user_list[game_set % user_count])
             val ref__ = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
             ref__.child("game_set").setValue(game_set)
         }
     }
+    //戻るボタンの無効化
+    override fun onBackPressed() {
 
+    }
 
     fun surface_watch_fun(customSurfaceView: CustomSurfaceView){
 
@@ -207,21 +210,21 @@ class RoomMainActivity : AppCompatActivity() {
                 room_answer_text_1.setVisibility(View.VISIBLE)
                 hand0.postDelayed(Runnable {
                     room_answer_text_1.setVisibility(View.INVISIBLE)
-                },3000)
+                }, 3000)
             }
             1 -> {
                 room_answer_text_2.text = answer_text
                 room_answer_text_2.setVisibility(View.VISIBLE)
                 hand0.postDelayed(Runnable {
                     room_answer_text_2.setVisibility(View.INVISIBLE)
-                },3000)
+                }, 3000)
             }
             2 -> {
                 room_answer_text_3.text = answer_text
                 room_answer_text_3.setVisibility(View.VISIBLE)
                 hand0.postDelayed(Runnable {
                     room_answer_text_3.setVisibility(View.INVISIBLE)
-                },3000)
+                }, 3000)
             }
         }
         aa++
@@ -250,7 +253,7 @@ class RoomMainActivity : AppCompatActivity() {
         textview_announce_write.setVisibility(View.VISIBLE)
         hand0.postDelayed(Runnable {
             textview_announce_write.setVisibility(View.INVISIBLE)
-        },3000)
+        }, 3000)
         textView_odai.text = "お題は「$view_odai」です"
         textView_odai.setVisibility(View.VISIBLE)
 
@@ -271,7 +274,7 @@ class RoomMainActivity : AppCompatActivity() {
         textview_announce_watch.setVisibility(View.VISIBLE)
         hand0.postDelayed(Runnable {
             textview_announce_watch.setVisibility(View.INVISIBLE)
-        },3000)
+        }, 3000)
 
         textView_odai.setVisibility(View.GONE)
 
@@ -370,7 +373,7 @@ class RoomMainActivity : AppCompatActivity() {
         val pass_down = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/draw_down")
         pass_down.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
@@ -398,7 +401,7 @@ class RoomMainActivity : AppCompatActivity() {
         val pass_move = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/draw_move")
         pass_move.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
@@ -424,7 +427,7 @@ class RoomMainActivity : AppCompatActivity() {
         val pass_up = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/draw_up")
         pass_up.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
@@ -450,16 +453,17 @@ class RoomMainActivity : AppCompatActivity() {
         val color_ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/btn")
         color_ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val btn_ref = snapshot.getValue(Button_board::class.java)
-                if(btn_ref==null){
+                if (btn_ref == null) {
                     return
                 }
                 val selectedcolor = btn_ref?.color
                 customSurfaceView_read.changeColor_watch(selectedcolor!!)
             }
+
             override fun onCancelled(error: DatabaseError) {
                 //エラー処理
             }
@@ -469,7 +473,7 @@ class RoomMainActivity : AppCompatActivity() {
         val reset_ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw/btn")
         reset_ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val btn_ref = snapshot.getValue(Button_board::class.java)
@@ -477,6 +481,7 @@ class RoomMainActivity : AppCompatActivity() {
                     customSurfaceView_read.reset_watch()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
         })
@@ -486,17 +491,18 @@ class RoomMainActivity : AppCompatActivity() {
         val ref_message = FirebaseDatabase.getInstance().getReference("Room/$room_id/Message/text")
         ref_message.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val answer_text = snapshot.getValue()
 //                val answer_user_id = snapshot.child("from_user_id").getValue()
-                if(aa>0){
+                if (aa > 0) {
                     set_answer(answer_text.toString())
-                    Log.d("message","------")
+                    Log.d("message", "------")
                 }
                 aa++
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
         })
@@ -505,12 +511,13 @@ class RoomMainActivity : AppCompatActivity() {
         val ref_answer = FirebaseDatabase.getInstance().getReference("Room/$room_id/game")
         ref_answer.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value == null){
+                if (snapshot.value == null) {
                     return
                 }
                 val answer_text = snapshot.child("answer").getValue().toString()
                 answer = answer_text
             }
+
             override fun onCancelled(error: DatabaseError) {
             }
         })

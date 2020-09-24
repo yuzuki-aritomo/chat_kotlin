@@ -16,18 +16,21 @@ import kotlinx.android.synthetic.main.activity_room_start.*
 class RoomStartActivity : AppCompatActivity() {
 
     var user_count = "0"
+    var user_id: String = ""
+    var room_id = "room_1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_start)
 
         // 初期のroom情報
-        val room_id = intent.getStringExtra("room_id")
+        room_id = intent.getStringExtra("room_id")
 
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
-        val user_id = ref.key.toString()
+        user_id = ref.key.toString()
+        Log.d("vvv",user_id)
         ref.child("user_id").setValue(ref.key)
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue(0)
@@ -56,7 +59,8 @@ class RoomStartActivity : AppCompatActivity() {
                     Log.d("start",user_count)
                     Log.d("start",ready_count.toString())
                     if(user_count.toInt()>1){
-                        startGame(room_id.toString(),user_id,user_count)
+                        Log.d("vvv",user_id)
+                        startGame(room_id.toString(),user_count)
                     }
                 }
             }
@@ -64,7 +68,6 @@ class RoomStartActivity : AppCompatActivity() {
                 //エラー処理
             }
         })
-
 
         //退出ボタン
         val btn_finish: Button = findViewById(R.id.exit_from_start)
@@ -90,13 +93,24 @@ class RoomStartActivity : AppCompatActivity() {
             }
         }
     }
-    fun startGame(room_id: String, user_id_pass: String, user_count: String){
+    //戻るボタンでユーザーの情報を削除
+    override fun onBackPressed() {
+        //user情報の削除
+        val ref_delete = FirebaseDatabase.getInstance().getReference("Room/$room_id")
+        ref_delete.child("user/$user_id").removeValue()
+        ref_delete.child("ready$user_id").removeValue()
+        finish()
+    }
+    fun startGame(room_id: String,user_count: String){
+        Log.d("vvv",user_id)
         val user_name = editText_user_name.text.toString()
-        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id_pass")
+        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
         ref.child("user_name").setValue(user_name)
+        Log.d("vvv",user_id)
+
         val intent = Intent(this, RoomMainActivity::class.java)
         intent.putExtra("room_id", room_id)//room_id: room_1
-        intent.putExtra("user_id", user_id_pass)
+        intent.putExtra("user_id", user_id)
         intent.putExtra("user_name", user_name)
         intent.putExtra("user_count", user_count)
         startActivity(intent)
