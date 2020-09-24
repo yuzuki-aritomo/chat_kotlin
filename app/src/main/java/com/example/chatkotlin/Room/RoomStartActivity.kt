@@ -43,11 +43,11 @@ class RoomStartActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 user_image = snapshot.childrenCount.toInt()
                 when(user_image){
-                    1 -> room_start_image.setImageResource(R.drawable.ranking1)
-                    2 -> room_start_image.setImageResource(R.drawable.ranking2)
-                    3 -> room_start_image.setImageResource(R.drawable.ranking3)
-                    4 -> room_start_image.setImageResource(R.drawable.ranking4)
-                    5 -> room_start_image.setImageResource(R.drawable.ranking5)
+                    1 -> room_start_image.setImageResource(R.drawable.user_image_1)
+                    2 -> room_start_image.setImageResource(R.drawable.user_image_2)
+                    3 -> room_start_image.setImageResource(R.drawable.user_image_3)
+                    4 -> room_start_image.setImageResource(R.drawable.user_image_4)
+                    5 -> room_start_image.setImageResource(R.drawable.user_image_5)
                 }
             }
             override fun onCancelled(error: DatabaseError) {
