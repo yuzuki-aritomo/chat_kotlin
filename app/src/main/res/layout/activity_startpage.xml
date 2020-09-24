@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/startpage_background"
     tools:context=".Default.StartpageActivity">
 
     <TextView
@@ -17,6 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/start_start_button"
         android:layout_width="0dp"
@@ -25,8 +27,8 @@
         android:layout_marginBottom="50dp"
         android:background="@drawable/start_rounded_button"
         android:text="START"
-        android:textSize="25sp"
         android:textColor="@android:color/white"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/start_text_title"
         app:layout_constraintStart_toStartOf="@+id/start_text_title"
