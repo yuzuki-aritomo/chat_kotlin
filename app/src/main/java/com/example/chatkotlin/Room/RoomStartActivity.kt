@@ -18,6 +18,7 @@ class RoomStartActivity : AppCompatActivity() {
     var user_count = "0"
     var user_id: String = ""
     var room_id = "room_1"
+    var user_image = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +26,6 @@ class RoomStartActivity : AppCompatActivity() {
 
         // 初期のroom情報
         room_id = intent.getStringExtra("room_id")
-
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
@@ -35,7 +35,25 @@ class RoomStartActivity : AppCompatActivity() {
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue(0)
         ref.child("user_name").setValue("ゲスト")
+        ref.child("user_image").setValue(0)
 
+        //userの画像の選定と表示
+        val ref_img = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
+        ref_img.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                user_image = snapshot.childrenCount.toInt()
+                when(user_image){
+                    1 -> room_start_image.setImageResource(R.drawable.user_image_1)
+                    2 -> room_start_image.setImageResource(R.drawable.user_image_2)
+                    3 -> room_start_image.setImageResource(R.drawable.user_image_3)
+                    4 -> room_start_image.setImageResource(R.drawable.user_image_4)
+                    5 -> room_start_image.setImageResource(R.drawable.user_image_5)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                //エラー処理
+            }
+        })
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
@@ -101,11 +119,13 @@ class RoomStartActivity : AppCompatActivity() {
         ref_delete.child("ready$user_id").removeValue()
         finish()
     }
+    //ゲームスタート
     fun startGame(room_id: String,user_count: String){
         Log.d("vvv",user_id)
         val user_name = editText_user_name.text.toString()
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
         ref.child("user_name").setValue(user_name)
+        ref.child("user_image").setValue(user_image)
         Log.d("vvv",user_id)
 
         val intent = Intent(this, RoomMainActivity::class.java)
