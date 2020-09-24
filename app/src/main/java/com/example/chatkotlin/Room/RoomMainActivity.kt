@@ -55,7 +55,7 @@ class RoomMainActivity : AppCompatActivity() {
         //gameのセット数
         when(user_count){
             2 -> game_set_max = 6
-            3 -> game_set_max = 6
+            3 -> game_set_max = 3
             4 -> game_set_max = 4
             5 -> game_set_max = 5
         }
@@ -261,6 +261,7 @@ class RoomMainActivity : AppCompatActivity() {
         room_user_image_3.setVisibility(View.INVISIBLE)
         room_user_image_4.setVisibility(View.INVISIBLE)
         room_user_image_5.setVisibility(View.INVISIBLE)
+        btn_to_another_board_activity.setVisibility(View.GONE)
 
         //write button
         btn_board_reset.setVisibility(View.INVISIBLE)
