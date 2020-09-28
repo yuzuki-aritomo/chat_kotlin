@@ -38,6 +38,7 @@ class RoomMainActivity : AppCompatActivity() {
     var user_list = arrayOf<String>("aa", "aa", "aa", "aa", "aa")
     var user_name_list = arrayOf<String>("ゲスト", "ゲスト", "ゲスト", "ゲスト", "ゲスト")
     val hand0= Handler()
+    var a = "おだい"
 
     private var questionItem: List<*> = ArrayList<Any?>()
 
@@ -107,21 +108,12 @@ class RoomMainActivity : AppCompatActivity() {
                         abc++
                     }
                 }
-
-//                var i = 0
-//                for (name in user_name_list) {
-//                    val textView_name: TextView = layout_name.getChildAt(i) as TextView
-//                    textView_name.text = name
-//                    i++
-//                }
             }
 
             override fun onCancelled(p0: DatabaseError) {
             }
         })
         game_set = 1
-
-
 
         //game_setが終わったかどうかを取ってくる(firebaseに変更があったら) 1回目以降
         var game_set_num = 0
@@ -158,7 +150,12 @@ class RoomMainActivity : AppCompatActivity() {
                     //game_set % user_count の値の人が書く人
                     if (user_id == user_list[game_set % user_count]) {
                         //お題の選定とfirebaseに保存
-                        val a = RandomChoice()
+//                        val a = RandomChoice()
+                        when(game_set_num){
+                            1-> a = "こおり"
+                            2-> a = "すまほ"
+                            3-> a = "さかな"
+                        }
                         FirebaseDatabase.getInstance().getReference("Room/$room_id/game/answer")
                             .setValue(
                                 a
@@ -454,12 +451,14 @@ class RoomMainActivity : AppCompatActivity() {
                     return
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
-                val x_string: String = draw_down?.x.toString() ?: "-1"
-                val y_string: String = draw_down?.y.toString() ?: "-1"
+//                val x_string: String = draw_down?.x.toString() ?: "-1"
+//                val y_string: String = draw_down?.y.toString() ?: "-1"
 
                 //string からfloatに変換
-                val x: Float = x_string.toFloat()
-                val y: Float = y_string.toFloat()
+//                val x: Float = x_string.toFloat()
+//                val y: Float = y_string.toFloat()
+                val x: Float = draw_down?.x!!.toFloat()
+                val y: Float = draw_down?.y!!.toFloat()
 
                 if (i % 2 == 1) {
                     customSurfaceView_read.touchUp_watch(x, y)
