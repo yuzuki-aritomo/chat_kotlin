@@ -183,9 +183,8 @@ class CustomSurfaceView: SurfaceHolder.Callback{
         val x_width = x/width!!
         val y_width = y/height!!
 
-        
-        val x_data = x_width.toString()
-        val y_data = y_width.toString()
+        val x_data = x_width
+        val y_data = y_width
         database.child("draw_move").child("x").setValue(x_data)
         database.child("draw_move").child("y").setValue(y_data)
 
