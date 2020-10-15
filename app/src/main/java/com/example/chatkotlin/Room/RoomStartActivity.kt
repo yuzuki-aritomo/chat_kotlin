@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import com.example.chatkotlin.R
+import com.example.chatkotlin.data.UserDB
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -27,11 +28,13 @@ class RoomStartActivity : AppCompatActivity() {
         // 初期のroom情報
         room_id = intent.getStringExtra("room_id")
 
+        val userdb = UserDB(applicationContext)
+        user_id = userdb.getuser_id()
+
         //user_id の登録
-        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user").push()
-        user_id = ref.key.toString()
+        val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
         Log.d("vvv",user_id)
-        ref.child("user_id").setValue(ref.key)
+        ref.child("user_id").setValue(user_id)
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue(0)
         ref.child("user_name").setValue("ゲスト")
