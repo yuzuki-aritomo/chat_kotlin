@@ -18,10 +18,12 @@ class HomeActivity : AppCompatActivity() {
 
         val bitmap :Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ranking1)
         val userdb = UserDB(applicationContext)
+        userdb.dataeExist()
 //        userdb.insertData("1", "yuzuki", "abcd", bitmap)
-        hand0.postDelayed(Runnable {
-            val name = userdb.selectData()
-            Log.d("database",name)
-        }, 3000)
+        val name = userdb.getname()
+        val user_id = userdb.getuser_id()
+
+        Log.d("database",name)
+        Log.d("database",user_id)
     }
 }
