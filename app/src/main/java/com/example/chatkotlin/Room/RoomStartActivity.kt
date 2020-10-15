@@ -60,6 +60,7 @@ class RoomStartActivity : AppCompatActivity() {
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
+        val ref_ready = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
         //接続人数を表示(引数：room_id 戻り値：数字)
         ref_user.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -96,12 +97,13 @@ class RoomStartActivity : AppCompatActivity() {
         btn_finish.setOnClickListener {
             //user情報の削除
             ref_user.child(user_id).removeValue()
+            ref_ready.child(user_id).removeValue()
             finish()
         }
 
         //準備完了ボタン
         val game_start : Button = findViewById(R.id.start_from_start)
-        val ref_ready = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
+//        val ref_ready = FirebaseDatabase.getInstance().getReference("Room/$room_id/ready")
         var i = 0
         game_start.setOnClickListener {
             if(i%2==0){
@@ -120,7 +122,7 @@ class RoomStartActivity : AppCompatActivity() {
         //user情報の削除
         val ref_delete = FirebaseDatabase.getInstance().getReference("Room/$room_id")
         ref_delete.child("user/$user_id").removeValue()
-        ref_delete.child("ready$user_id").removeValue()
+        ref_delete.child("ready/$user_id").removeValue()
         finish()
     }
     //ゲームスタート

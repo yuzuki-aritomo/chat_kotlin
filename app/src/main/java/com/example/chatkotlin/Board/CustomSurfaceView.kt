@@ -160,19 +160,20 @@ class CustomSurfaceView: SurfaceHolder.Callback{
     ///// path クラスで描画するポイントを保持
     ///    ACTION_DOWN 時の処理
     private fun touchDown(x: Float, y: Float) {
-        val database = FirebaseDatabase.getInstance().getReference("Room/$room_id//draw")
+        val database = FirebaseDatabase.getInstance().getReference("Room/$room_id/draw")
 
         val x_width = x/width!!
         val y_height = y/height!!
-        val x_data = x_width.toString()
-        val y_data = y_height.toString()
+//        val x_data = x_width.toString()
+//        val y_data = y_height.toString()
 
         val xyDataUpdate: MutableMap<String, Any> = HashMap()
-        xyDataUpdate["x"] = x_data
-        xyDataUpdate["y"] = y_data
+        xyDataUpdate["x"] = x_width
+        xyDataUpdate["y"] = y_height
         database.child("draw_down").updateChildren(xyDataUpdate)
+//        database.child("draw_move").child("x").setValue(x_width)
+//        database.child("draw_move").child("y").setValue(y_height)
 
-        Log.d("width", width.toString())
         path = Path()
         path!!.moveTo(x, y)
     }
@@ -183,10 +184,10 @@ class CustomSurfaceView: SurfaceHolder.Callback{
         val x_width = x/width!!
         val y_width = y/height!!
 
-        val x_data = x_width
-        val y_data = y_width
-        database.child("draw_move").child("x").setValue(x_data)
-        database.child("draw_move").child("y").setValue(y_data)
+//        val x_data = x_width
+//        val y_data = y_width
+        database.child("draw_move").child("x").setValue(x_width)
+        database.child("draw_move").child("y").setValue(y_width)
 
         path!!.lineTo(x, y)
         draw(pathInfo(path!!, color!!))
@@ -197,18 +198,18 @@ class CustomSurfaceView: SurfaceHolder.Callback{
         val database = FirebaseDatabase.getInstance().getReference("Room/$room_id//draw")
         val x_width = x/width!!
         val y_width = y/height!!
-        val x_data = x_width.toString()
-        val y_data = y_width.toString()
+//        val x_data = x_width.toString()
+//        val y_data = y_width.toString()
 
         //firebaseに同時保存
         val xyDataUpdate: MutableMap<String, Any> = HashMap()
-        xyDataUpdate["x"] = x_data
-        xyDataUpdate["y"] = y_data
+        xyDataUpdate["x"] = x_width
+        xyDataUpdate["y"] = y_width
         database.child("draw_up").updateChildren(xyDataUpdate)
 
         val xyDataUpdate_move: MutableMap<String, Any> = HashMap()
-        xyDataUpdate_move["x"] = ""
-        xyDataUpdate_move["y"] = ""
+        xyDataUpdate_move["x"] = 0F
+        xyDataUpdate_move["y"] = 0F
         database.child("draw_move").updateChildren(xyDataUpdate_move)
 
         /// pathクラスとdrawメソッドで線を書く
@@ -302,6 +303,6 @@ data class pathInfo(
 )
 
 data class Draw_data(
-    var x: String? = "0",
-    var y: String? = "0",
+    var x: Float? = null,
+    var y: Float? = null,
 )

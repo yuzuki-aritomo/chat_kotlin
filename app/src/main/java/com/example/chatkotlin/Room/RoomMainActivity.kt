@@ -358,12 +358,12 @@ class RoomMainActivity : AppCompatActivity() {
     //firebaseに初期値を代入
     fun set_firebase_construct(){
         val pass_down = FirebaseDatabase.getInstance().getReference("Room/$room_id")
-        pass_down.child("draw/draw_up/x").setValue("0")
-        pass_down.child("draw/draw_up/y").setValue("0")
-        pass_down.child("draw/draw_move/x").setValue("")
-        pass_down.child("draw/draw_move/y").setValue("")
-        pass_down.child("draw/draw_down/x").setValue("0")
-        pass_down.child("draw/draw_down/y").setValue("0")
+//        pass_down.child("draw/draw_up/x").setValue(0)
+//        pass_down.child("draw/draw_up/y").setValue(0)
+        pass_down.child("draw/draw_move/x").setValue(0F)
+        pass_down.child("draw/draw_move/y").setValue(0F)
+//        pass_down.child("draw/draw_down/x").setValue(0)
+//        pass_down.child("draw/draw_down/y").setValue(0)
         pass_down.child("draw/btn/color").setValue("black")
         pass_down.child("draw/btn/reset").setValue("a")
         pass_down.child("game/answer").setValue("aaa")
@@ -398,18 +398,14 @@ class RoomMainActivity : AppCompatActivity() {
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
 
-                val x_string: String = draw_down?.x.toString() ?: "-1"
-                val y_string: String = draw_down?.y.toString() ?: "-1"
+                val x: Float = draw_down?.x!!.toFloat()
+                val y: Float = draw_down?.y!!.toFloat()
 
-                //string からfloatに変換
-                if (x_string != "" && y_string != "") {
-                    val x: Float = x_string.toFloat()
-                    val y: Float = y_string.toFloat()
+//                val x: Float = x_string.toFloat()
+//                val y: Float = y_string.toFloat()
 
-                    if (i % 2 == 1) {
-                        customSurfaceView_read.touchDown_watch(x, y)
-                        Log.d("bbb", i.toString())
-                    }
+                if (i % 2 == 1) {
+                    customSurfaceView_read.touchDown_watch(x, y)
                 }
             }
 
@@ -425,10 +421,10 @@ class RoomMainActivity : AppCompatActivity() {
                     return
                 }
                 val draw_down = snapshot.getValue(Draw_data::class.java)
-                val x_string: String = draw_down?.x.toString()
-                val y_string: String = draw_down?.y.toString()
+                val x_string: Float = draw_down?.x!!.toFloat()
+                val y_string: Float = draw_down?.y!!.toFloat()
 
-                if (x_string != "" && y_string != "") {
+                if (x_string != 0F && y_string != 0F) {
                     //string からfloatに変換
                     val x: Float = x_string.toFloat()
                     val y: Float = y_string.toFloat()
