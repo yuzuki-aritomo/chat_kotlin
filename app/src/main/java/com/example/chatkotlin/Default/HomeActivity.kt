@@ -14,28 +14,34 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.chatkotlin.R
 import com.example.chatkotlin.data.UserDB
 import kotlinx.android.synthetic.main.activity_home.*
+import java.io.ByteArrayOutputStream
 
 
 class HomeActivity : AppCompatActivity() {
+    var userBitmap :Bitmap? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         val userdb = UserDB(applicationContext)
-        userdb.dataeExist()
-        var name = userdb.getname()
-        var user_id = userdb.getuser_id()
-        Log.d("database",name)
-        Log.d("database",user_id)
+        val name :String = userdb.getname()
+        val user_id = userdb.getuser_id()
+        val userimage :Bitmap = userdb.getUserImage()
 
+        homeUserImage.setImageBitmap(userimage)
+        home_user_name.setText(name)
 
+        //---------ボタンの処理-------------
         homeUserImage.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent,0)
         }
-
-
+        home_save.setOnClickListener{
+            saveUserName()
+            saveUserImage()
+        }
     }
 
     //画像の保存
@@ -44,12 +50,24 @@ class HomeActivity : AppCompatActivity() {
         if(requestCode==0 && resultCode == Activity.RESULT_OK && data != null){
             Log.d("home", "selected image")
             val uri = data.data
-
-            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
-
-            val bitmapDrawable = BitmapDrawable(bitmap)
-//            homeUserImage.setBackgroundDrawable(bitmapDrawable)
-            homeUserImage.setImageBitmap(bitmap)
+            userBitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
+            homeUserImage.setImageBitmap(userBitmap)
         }
     }
+
+    fun saveUserName(){
+        val newname :String = home_user_name.text.toString()
+        if( newname != ""){
+            val userdb = UserDB(applicationContext)
+            userdb.updateUserName(newname)
+        }
+    }
+    fun saveUserImage(){
+        //user imageに変更があった場合のみ
+        if (userBitmap != null){
+            val userdb = UserDB(applicationContext)
+            userdb.updateUserImage(userBitmap!!)
+        }
+    }
+
 }

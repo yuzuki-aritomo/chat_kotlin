@@ -103,6 +103,7 @@ class UserDB(context: Context){
             return "a"
         }
     }
+    //---------------GET DATA------------------
     fun getname() :String{
         val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
         val database = dbHelper.readableDatabase
@@ -119,32 +120,44 @@ class UserDB(context: Context){
         cursor.moveToFirst()
         return cursor.getString(cursor.getColumnIndex("user_id"))
     }
+    fun getUserImage() :Bitmap{
+        val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
+        val database = dbHelper.readableDatabase
+        val sql = "select * from " + tableName + " where id = 1"
+        val cursor = database.rawQuery(sql, null)
+        cursor.moveToFirst()
+        val blob: ByteArray = cursor.getBlob(cursor.getColumnIndex("image"))
+        return BitmapFactory.decodeByteArray(blob, 0, blob.size)
+    }
+
+    //--------------UPDATE---------------
+    fun updateUserImage(newBitmap: Bitmap){
+        val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
+        val database = dbHelper.writableDatabase
+
+        val values = ContentValues()
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        newBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val bytes = byteArrayOutputStream.toByteArray()
+        values.put("image", bytes)
+
+        val whereClauses = "id = ?"
+        val whereArgs = arrayOf("1")
+        database.update(tableName, values, whereClauses, whereArgs)
+    }
+    fun updateUserName(newName: String){
+        val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
+        val database = dbHelper.writableDatabase
+        val values = ContentValues()
+        values.put("name",newName)
+        val whereClauses = "id = ?"
+        val whereArgs = arrayOf("1")
+        database.update(tableName, values, whereClauses, whereArgs)
+    }
 
     fun delete(){
         val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
         val database = dbHelper.readableDatabase
         database.delete(tableName,"id = ?", arrayOf("1"))
-
-
-        //データがない場合の初期の処理
-//        database = dbHelper.writableDatabase
-//        val values = ContentValues()
-//
-//        values.put("id", "1")
-//        values.put("name", "ゲスト")
-//
-//        //user_idをuuidで登録
-//        var user_id = UUID.randomUUID().toString()
-//        values.put("user_id", user_id)
-//
-//        //gests画像を保存
-//        val bitmap :Bitmap = BitmapFactory.decodeResource(context.resources,R.drawable.guestuser)
-//        val byteArrayOutputStream = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-//        val bytes = byteArrayOutputStream.toByteArray()
-//        values.put("image", bytes)
-//
-//        Log.d("database","データを新たに作成しました")
-//        database.insertOrThrow(tableName, null, values)
     }
 }
