@@ -42,6 +42,10 @@ class HomeActivity : AppCompatActivity() {
             saveUserName()
             saveUserImage()
         }
+        home_return.setOnClickListener {
+            val intent = Intent(this, StartpageActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     //画像の保存
