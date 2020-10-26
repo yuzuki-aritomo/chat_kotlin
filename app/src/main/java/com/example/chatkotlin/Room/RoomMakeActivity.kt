@@ -33,11 +33,14 @@ class RoomMakeActivity : AppCompatActivity() {
             url.child("$room_id/user_name").setValue(name)
             url.child("$room_id/user_id").setValue(user_id)
 
-            val intent = Intent(this, RoomStartActivity::class.java)
+            val intent = Intent(this, RoomWaitActivity::class.java)
+            intent.putExtra("room_id", room_id)
+            intent.putExtra("user", "master")
+            intent.putExtra("room_name", room_name)
             startActivity(intent)
         }
         //戻る
-        room_male_return.setOnClickListener {
+        room_make_return.setOnClickListener {
             val intent = Intent(this, RoomChoiceActivity::class.java)
             startActivity(intent)
         }
