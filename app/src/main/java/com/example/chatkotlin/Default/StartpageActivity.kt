@@ -36,7 +36,11 @@ class StartpageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        start_start_button.setOnClickListener() {
+        start_start_button.setOnClickListener {
+//            val intent = Intent(this, RoomChoiceActivity::class.java)
+//            startActivity(intent)
+        }
+        startpage_room.setOnClickListener {
             val intent = Intent(this, RoomChoiceActivity::class.java)
             startActivity(intent)
         }
