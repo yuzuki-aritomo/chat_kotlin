@@ -56,7 +56,7 @@ class RoomMainActivity : AppCompatActivity() {
         //gameのセット数
         when(user_count){
             2 -> game_set_max = 6
-            3 -> game_set_max = 3
+            3 -> game_set_max = 6
             4 -> game_set_max = 4
             5 -> game_set_max = 5
         }

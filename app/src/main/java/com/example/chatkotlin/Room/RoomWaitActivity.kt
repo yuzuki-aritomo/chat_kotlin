@@ -46,15 +46,7 @@ class RoomWaitActivity : AppCompatActivity() {
         wait_user_name.setText(user_name)
 
         //user_imageをstorageに保存
-        val storage_ref = FirebaseStorage.getInstance().getReference("$room_id/$user_id")
-        val baos = ByteArrayOutputStream()
-        user_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-        storage_ref.putBytes(data)
-            .addOnSuccessListener {
-                val image_url = storage_ref.downloadUrl
-                FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_image").setValue(image_url)
-            }
+        saveImageToFirebaseStrage(user_image)
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
@@ -143,5 +135,18 @@ class RoomWaitActivity : AppCompatActivity() {
         intent.putExtra("user_name", user_name)
         intent.putExtra("user_count", user_count)
         startActivity(intent)
+    }
+
+    fun saveImageToFirebaseStrage(user_image: Bitmap){
+        val storage_ref = FirebaseStorage.getInstance().getReference("/Room/$room_id/$user_id")
+        val baos = ByteArrayOutputStream()
+        user_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        storage_ref.putBytes(data)
+            .addOnSuccessListener {
+                storage_ref.downloadUrl.addOnSuccessListener {
+                    FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_image").setValue(it.toString())
+                }
+            }
     }
 }

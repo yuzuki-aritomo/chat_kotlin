@@ -25,6 +25,9 @@ class RoomMakeActivity : AppCompatActivity() {
         //room作成時
         room_make_make.setOnClickListener {
             val room_name :String = room_make_name.text.toString()
+            if(room_name==""){
+                return@setOnClickListener
+            }
             val room_id = UUID.randomUUID().toString()
             val url = FirebaseDatabase.getInstance().getReference("RoomMake")
             url.setValue(room_id)
