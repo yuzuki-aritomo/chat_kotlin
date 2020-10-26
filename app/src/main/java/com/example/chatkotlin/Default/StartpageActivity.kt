@@ -19,6 +19,22 @@ class StartpageActivity : AppCompatActivity() {
         //databaseの初期化
         val userdb = UserDB(applicationContext)
         userdb.dataeExist()
+        val user_name = userdb.getname()
+        val user_image = userdb.getUserImage()
+
+        //レイアウトの初期値
+        startpage_user_image.setImageBitmap(user_image)
+        startpage_user_name.setText(user_name)
+
+        //---------ボタンの処理-------------
+        startpage_user_image.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+        startpage_setting.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
 
         start_start_button.setOnClickListener() {
             val intent = Intent(this, RoomChoiceActivity::class.java)

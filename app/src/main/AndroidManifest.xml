@@ -9,23 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Room.RoomWaitActivity"></activity>
+        <activity android:name=".Default.SettingActivity"></activity>
+        <activity android:name=".Room.RoomWaitActivity" />
         <activity android:name=".Room.RoomMakeActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name=".Default.HomeActivity"></activity>
+        <activity android:name=".Default.StartpageActivity">
              <intent-filter>
              <action android:name="android.intent.action.MAIN" />
              <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>
-        </activity>
-        <activity android:name=".Default.HomeActivity">
-        </activity>
-        <activity android:name=".Default.StartpageActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Room.RoomResultActivity" />
         <activity
