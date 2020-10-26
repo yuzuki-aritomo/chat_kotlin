@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.chatkotlin"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "com.xwray:groupie:2.1.0"
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
 }

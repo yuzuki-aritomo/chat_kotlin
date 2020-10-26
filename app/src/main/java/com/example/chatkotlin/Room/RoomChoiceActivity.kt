@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.chatkotlin.Board.AnotherBoardActivity
+import com.example.chatkotlin.Default.StartpageActivity
 import com.example.chatkotlin.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -34,6 +34,20 @@ class RoomChoiceActivity : AppCompatActivity() {
         room2.setOnClickListener {
             val intent = Intent(this, RoomStartActivity::class.java)
             intent.putExtra("room_id", "room_2")
+            startActivity(intent)
+        }
+
+        //Room3btn
+        val room3: Button = findViewById(R.id.room_start_3)
+        room3.setOnClickListener {
+            val intent = Intent(this, RoomStartActivity::class.java)
+            intent.putExtra("room_id", "room_3")
+            startActivity(intent)
+        }
+
+        val returnstart: Button = findViewById(R.id.return_startpage_button)
+        returnstart.setOnClickListener {
+            val intent = Intent(this, StartpageActivity::class.java)
             startActivity(intent)
         }
 

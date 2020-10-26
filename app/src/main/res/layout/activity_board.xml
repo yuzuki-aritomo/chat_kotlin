@@ -4,39 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_google_signin_btn_text_dark_default"
-    tools:context=".Board.BoardActivity">
+    android:background="@drawable/startpage_background">
 
     <SurfaceView
         android:id="@+id/surfaceView_write"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_board_reset"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/room_message_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_name" />
 
     <EditText
         android:id="@+id/room_message_text"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round_edit_message"
         android:hint="ひらがなでお題を書いてください"
         android:inputType="text"
+        android:paddingLeft="20dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/room_message_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView_write" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/blackBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/frame_style_black"
         android:text="くろ"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/room_btn_change_color"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -79,7 +88,13 @@
         android:id="@+id/room_message_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/round_submit"
         android:text="送信"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -87,29 +102,41 @@
         android:id="@+id/whiteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="消しゴム"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/room_btn_change_color" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/room_btn_change_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="色変更"
+        android:visibility="visible"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/room_message_text" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_board_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_button"
         android:text="全消し"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/whiteBtn" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/room_answer_text_1"
@@ -151,93 +178,100 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayout_image"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="10dp">
 
         <ImageView
             android:id="@+id/room_user_image_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/user_image_1"/>
 
         <ImageView
             android:id="@+id/room_user_image_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/user_image_2"/>
 
         <ImageView
             android:id="@+id/room_user_image_3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/user_image_3"/>
 
         <ImageView
             android:id="@+id/room_user_image_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/user_image_4"/>
 
         <ImageView
             android:id="@+id/room_user_image_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@drawable/user_image_5"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/linearLayout_name"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_image">
 
         <TextView
             android:id="@+id/room_answer_user_1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_weight="1"
-            android:text="名前" />
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:gravity="center"
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:gravity="center"
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:gravity="center"
+            android:text="" />
 
         <TextView
             android:id="@+id/room_answer_user_5"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="名前" />
+            android:gravity="center"
+            android:text="" />
 
     </LinearLayout>
 
@@ -248,13 +282,14 @@
         android:layout_marginTop="88dp"
         android:background="@drawable/frame_text_write"
         android:gravity="center_horizontal"
+        android:padding="4dp"
         android:text="あなたは\n「絵を書く人」です\nお題の絵を書きましょう"
         android:textColor="@android:color/holo_red_dark"
-        android:padding="4dp"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+        app:layout_constraintTop_toTopOf="@+id/surfaceView_write"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textview_announce_watch"
@@ -269,7 +304,8 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+        app:layout_constraintTop_toTopOf="@+id/surfaceView_write"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textView_odai"
@@ -278,8 +314,23 @@
         android:layout_marginTop="8dp"
         android:text="お題"
         android:textSize="18sp"
+        android:textColor="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/surfaceView_write" />
+
+    <TextView
+        android:id="@+id/textView_answer_result"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="113dp"
+        android:background="@drawable/frame_anser_result"
+        android:gravity="center"
+        android:text="答え\n「お題」"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
