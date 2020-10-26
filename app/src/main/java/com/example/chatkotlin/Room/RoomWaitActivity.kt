@@ -1,6 +1,7 @@
 package com.example.chatkotlin.Room
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +12,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_room_start.*
 import kotlinx.android.synthetic.main.activity_room_start.text_ready_count
 import kotlinx.android.synthetic.main.activity_room_start.text_user_count
 import kotlinx.android.synthetic.main.activity_room_wait.*
+import java.io.ByteArrayOutputStream
 
 class RoomWaitActivity : AppCompatActivity() {
 
@@ -42,6 +45,16 @@ class RoomWaitActivity : AppCompatActivity() {
         room_wait_image.setImageBitmap(user_image)
         wait_user_name.setText(user_name)
 
+        //user_imageをstorageに保存
+        val storage_ref = FirebaseStorage.getInstance().getReference("$room_id/$user_id")
+        val baos = ByteArrayOutputStream()
+        user_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        storage_ref.putBytes(data)
+            .addOnSuccessListener {
+                val image_url = storage_ref.downloadUrl
+                FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_image").setValue(image_url)
+            }
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
@@ -49,8 +62,6 @@ class RoomWaitActivity : AppCompatActivity() {
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue(0)
         ref.child("user_name").setValue(user_name)
-        ref.child("user_image").setValue(0)
-
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
