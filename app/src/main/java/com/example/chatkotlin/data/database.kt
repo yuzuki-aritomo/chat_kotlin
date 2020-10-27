@@ -70,7 +70,7 @@ class UserDB(context: Context){
             saveImageToFirebaseStrage(bitmap,user_id)
             values.put("image_url","testdata")
 
-            Log.d("database","データを新たに作成しました")
+//            Log.d("database","データを新たに作成しました")
             database.insertOrThrow(tableName, null, values)
         }
     }

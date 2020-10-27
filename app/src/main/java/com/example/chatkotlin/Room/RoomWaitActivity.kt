@@ -39,14 +39,13 @@ class RoomWaitActivity : AppCompatActivity() {
         user_id = userdb.getuser_id()
         val user_name = userdb.getname()
         val user_image = userdb.getUserImage()
+        val user_image_url = userdb.getuser_image_url()
 
         //レイアウトの情報
         wait_room_name.setText(room_name)
         room_wait_image.setImageBitmap(user_image)
         wait_user_name.setText(user_name)
 
-        //user_imageをstorageに保存
-        saveImageToFirebaseStrage(user_image)
 
         //user_id の登録
         val ref = FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id")
@@ -54,6 +53,7 @@ class RoomWaitActivity : AppCompatActivity() {
         ref.child("draw_or_watch").setValue("watch")
         ref.child("score").setValue(0)
         ref.child("user_name").setValue(user_name)
+        ref.child("user_image").setValue(user_image_url)
 
         //firebase情報
         val ref_user = FirebaseDatabase.getInstance().getReference("Room/$room_id/user")
@@ -137,16 +137,4 @@ class RoomWaitActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun saveImageToFirebaseStrage(user_image: Bitmap){
-        val storage_ref = FirebaseStorage.getInstance().getReference("/Room/$room_id/$user_id")
-        val baos = ByteArrayOutputStream()
-        user_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-        storage_ref.putBytes(data)
-            .addOnSuccessListener {
-                storage_ref.downloadUrl.addOnSuccessListener {
-                    FirebaseDatabase.getInstance().getReference("Room/$room_id/user/$user_id/user_image").setValue(it.toString())
-                }
-            }
-    }
 }

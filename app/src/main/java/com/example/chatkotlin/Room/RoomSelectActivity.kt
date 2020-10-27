@@ -64,8 +64,8 @@ class RoomMake(
     val room_id: String = "",
     val room_name: String = "",
     val user_id: String = "",
+    val user_image: String = "",
     val user_name: String = "",
-//    val user_image: String = "",
 )
 
 class RoomMakeItem(val roommake: RoomMake): Item<ViewHolder>(){
@@ -73,7 +73,7 @@ class RoomMakeItem(val roommake: RoomMake): Item<ViewHolder>(){
         viewHolder.itemView.make_item_room_name.text = roommake.room_name
         val name = "作成者"+ roommake.user_name
         viewHolder.itemView.make_item_user_name.text = name
-//        Picasso.get().load(roommake.user_image).into(viewHolder.itemView.make_item_image)
+        Picasso.get().load(roommake.user_image).into(viewHolder.itemView.make_item_image)
     }
     override fun getLayout(): Int {
         return  R.layout.room_make_row_item

@@ -18,6 +18,7 @@ class RoomMakeActivity : AppCompatActivity() {
         val userdb = UserDB(applicationContext)
         val name :String = userdb.getname()
         val user_id = userdb.getuser_id()
+        val user_image = userdb.getuser_image_url()
         val userimage : Bitmap = userdb.getUserImage()
 
         room_male_image.setImageBitmap(userimage)
@@ -30,10 +31,14 @@ class RoomMakeActivity : AppCompatActivity() {
             }
             val room_id = UUID.randomUUID().toString()
             val url = FirebaseDatabase.getInstance().getReference("RoomMake/$room_id")
-            url.child("room_name").setValue(room_name)
-            url.child("room_id").setValue(room_id)
-            url.child("user_name").setValue(name)
-            url.child("user_id").setValue(user_id)
+
+            val DataUpdate: MutableMap<String, Any> = HashMap()
+            DataUpdate["room_name"] = room_name
+            DataUpdate["room_id"] = room_id
+            DataUpdate["user_name"] = name
+            DataUpdate["user_id"] = user_id
+            DataUpdate["user_image"] = user_image
+            url.updateChildren(DataUpdate)
 
             val intent = Intent(this, RoomWaitActivity::class.java)
             intent.putExtra("room_id", room_id)
