@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         }
         home_save.setOnClickListener{
             saveUserName()
-            saveUserImage()
+            saveUserImage(user_id)
         }
         home_return.setOnClickListener {
             val intent = Intent(this, StartpageActivity::class.java)
@@ -66,11 +66,12 @@ class HomeActivity : AppCompatActivity() {
             userdb.updateUserName(newname)
         }
     }
-    fun saveUserImage(){
+    fun saveUserImage(user_id: String){
         //user imageに変更があった場合のみ
         if (userBitmap != null){
             val userdb = UserDB(applicationContext)
             userdb.updateUserImage(userBitmap!!)
+            userdb.saveImageToFirebaseStrage(userBitmap!!, user_id)
         }
     }
 

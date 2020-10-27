@@ -20,10 +20,10 @@ class StartpageActivity : AppCompatActivity() {
 
         //databaseの初期化
         val userdb = UserDB(applicationContext)
+//        userdb.delete()
         userdb.dataeExist()
         val user_name = userdb.getname()
         val user_image = userdb.getUserImage()
-
         val url = userdb.getuser_image_url()
 
         Log.d("nnn",url)

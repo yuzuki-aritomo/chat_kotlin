@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.concurrent.thread
 
 
 class UserDBHelper(
@@ -66,16 +67,15 @@ class UserDB(context: Context){
             values.put("image", bytes)
 
             //imageをfirebaseに保存
-            val image_url = saveImageToFirebaseStrage(bitmap,user_id)
-            values.put("image_url",image_url)
+            saveImageToFirebaseStrage(bitmap,user_id)
+            values.put("image_url","testdata")
 
             Log.d("database","データを新たに作成しました")
             database.insertOrThrow(tableName, null, values)
         }
     }
 
-    var a = "imageurl"
-    fun saveImageToFirebaseStrage(user_image: Bitmap, user_id: String) :String{
+    fun saveImageToFirebaseStrage(user_image: Bitmap, user_id: String){
         val storage_ref = FirebaseStorage.getInstance().getReference("/UserImages/$user_id")
         val baos = ByteArrayOutputStream()
         user_image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -83,10 +83,9 @@ class UserDB(context: Context){
         storage_ref.putBytes(data)
             .addOnSuccessListener {
                 storage_ref.downloadUrl.addOnSuccessListener {
-                    a = it.toString()
+                    updateUserImageUrl(it.toString())
                 }
             }
-        return a
     }
 
     //---------------GET DATA------------------
@@ -112,7 +111,7 @@ class UserDB(context: Context){
         val sql = "select * from " + tableName + " where id = 1"
         val cursor = database.rawQuery(sql, null)
         cursor.moveToFirst()
-        return cursor.getString(cursor.getColumnIndex("user_image_url"))
+        return cursor.getString(cursor.getColumnIndex("image_url"))
     }
     fun getUserImage() :Bitmap{
         val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
@@ -144,6 +143,15 @@ class UserDB(context: Context){
         val database = dbHelper.writableDatabase
         val values = ContentValues()
         values.put("name",newName)
+        val whereClauses = "id = ?"
+        val whereArgs = arrayOf("1")
+        database.update(tableName, values, whereClauses, whereArgs)
+    }
+    fun updateUserImageUrl(newUrl: String){
+        val dbHelper = UserDBHelper(context, dbName, null, dbVersion)
+        val database = dbHelper.writableDatabase
+        val values = ContentValues()
+        values.put("image_url",newUrl)
         val whereClauses = "id = ?"
         val whereArgs = arrayOf("1")
         database.update(tableName, values, whereClauses, whereArgs)
