@@ -29,12 +29,11 @@ class RoomMakeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val room_id = UUID.randomUUID().toString()
-            val url = FirebaseDatabase.getInstance().getReference("RoomMake")
-            url.setValue(room_id)
-            url.child("$room_id/room_name").setValue(room_name)
-            url.child("$room_id/room_id").setValue(room_id)
-            url.child("$room_id/user_name").setValue(name)
-            url.child("$room_id/user_id").setValue(user_id)
+            val url = FirebaseDatabase.getInstance().getReference("RoomMake/$room_id")
+            url.child("room_name").setValue(room_name)
+            url.child("room_id").setValue(room_id)
+            url.child("user_name").setValue(name)
+            url.child("user_id").setValue(user_id)
 
             val intent = Intent(this, RoomWaitActivity::class.java)
             intent.putExtra("room_id", room_id)
