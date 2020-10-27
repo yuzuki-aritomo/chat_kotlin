@@ -18,6 +18,7 @@ class RoomMakeActivity : AppCompatActivity() {
         val userdb = UserDB(applicationContext)
         val name :String = userdb.getname()
         val user_id = userdb.getuser_id()
+        val user_image = userdb.getuser_image_url()
         val userimage : Bitmap = userdb.getUserImage()
 
         room_male_image.setImageBitmap(userimage)
@@ -25,15 +26,28 @@ class RoomMakeActivity : AppCompatActivity() {
         //room作成時
         room_make_make.setOnClickListener {
             val room_name :String = room_make_name.text.toString()
+            if(room_name==""){
+                return@setOnClickListener
+            }
             val room_id = UUID.randomUUID().toString()
-            val url = FirebaseDatabase.getInstance().getReference("RoomMake")
-            url.setValue(room_id)
-            url.child("$room_id/room_name").setValue(room_name)
-            url.child("$room_id/user_name").setValue(room_name)
-            url.child("$room_id/room_id").setValue(room_name)
+            val url = FirebaseDatabase.getInstance().getReference("RoomMake/$room_id")
+
+            val DataUpdate: MutableMap<String, Any> = HashMap()
+            DataUpdate["room_name"] = room_name
+            DataUpdate["room_id"] = room_id
+            DataUpdate["user_name"] = name
+            DataUpdate["user_id"] = user_id
+            DataUpdate["user_image"] = user_image
+            url.updateChildren(DataUpdate)
+
+            val intent = Intent(this, RoomWaitActivity::class.java)
+            intent.putExtra("room_id", room_id)
+            intent.putExtra("user", "master")
+            intent.putExtra("room_name", room_name)
+            startActivity(intent)
         }
         //戻る
-        room_male_return.setOnClickListener {
+        room_make_return.setOnClickListener {
             val intent = Intent(this, RoomChoiceActivity::class.java)
             startActivity(intent)
         }
